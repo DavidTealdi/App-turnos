@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+
+.div {
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 50px;
+    background-color: black;
+    padding: 20px;
+}
+
+ion-icon {
+    color: #fff;
+    margin-bottom: 10px;
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    padding: 11px;
+    right: 60px;
+}
+
+.button {
+    margin-left: 20px;
+    background-color: #000;
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    border: 2px solid #fff ;
+    padding: 8px 15px;
+    border-radius: .3rem;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+@media (max-width: 600px) {
+
+    .div {
+        margin-top: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 50px;
+        background-color: black;
+        padding: 20px;
+    }
+
+    .button {
+        margin-left: 6px;
+        padding: 5px 9px;
+    }
+
+    ion-icon {
+        right: 40px;
+    }
+    
+
+}
+
+@media (max-width: 400px) {
+
+    .div {
+        margin-top: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 50px;
+        background-color: black;
+        padding: 20px;
+    }
+
+    .button {
+        margin-left: 6px;
+        padding: 5px 9px;
+    }
+
+    ion-icon {
+        right: 40px;
+    }
+}
+
+
+@media (max-width: 300px) {
+
+    .div {
+        width: 100%;
+    }
+
+    .button {
+        margin-left: 6px;
+        padding: 5px 9px;
+    }
+
+    ion-icon {
+        right: 40px;
+    }
+}

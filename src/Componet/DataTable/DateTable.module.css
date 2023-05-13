@@ -1,0 +1,21 @@
+.title_table {
+    padding: 40px;
+    margin-bottom: 20px;
+}
+
+.button {
+    margin: 20px;
+    background-color: #000;
+    color: #fff;
+    padding: 6px;
+    border-radius: 5px;
+    border: none;
+}
+
+@media (max-width: 600px) {
+    
+    .title_table {
+        padding: 0;
+        margin-bottom: 10px;
+    }
+}
