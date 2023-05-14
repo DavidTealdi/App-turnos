@@ -5,6 +5,7 @@ import Title from './Componet/Title/Title';
 import Form from './Componet/Form/Form';
 import Login from './Componet/Login/Login';
 import DataTable from './Componet/DataTable/DataTable';
+import Footer from './Componet/FooterWeb/Footer';
 
 
 function App() {
@@ -19,7 +20,9 @@ function App() {
 
             <Title/>, 
           
-            <Form/>
+            <Form/>,
+
+            <Footer/>
           ]} 
         />
 

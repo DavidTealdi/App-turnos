@@ -5,23 +5,13 @@
     margin-left: 0;
     margin-right: 0;
     margin-bottom: 50px;
-    background-color: black;
+    background-color: #1D1F1D;
     padding: 20px;
-}
-
-ion-icon {
-    color: #fff;
-    margin-bottom: 10px;
-    width: 28px;
-    height: 28px;
-    position: absolute;
-    padding: 11px;
-    right: 60px;
 }
 
 .button {
     margin-left: 20px;
-    background-color: #000;
+    background-color: #1D1F1D;
     color: #fff;
     font-family: 'Roboto', sans-serif;
     border: 2px solid #fff ;
@@ -47,12 +37,6 @@ ion-icon {
         margin-left: 6px;
         padding: 5px 9px;
     }
-
-    ion-icon {
-        right: 40px;
-    }
-    
-
 }
 
 @media (max-width: 400px) {
@@ -70,10 +54,6 @@ ion-icon {
         margin-left: 6px;
         padding: 5px 9px;
     }
-
-    ion-icon {
-        right: 40px;
-    }
 }
 
 
@@ -86,9 +66,5 @@ ion-icon {
     .button {
         margin-left: 6px;
         padding: 5px 9px;
-    }
-
-    ion-icon {
-        right: 40px;
     }
 }
