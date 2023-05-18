@@ -3,10 +3,11 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 
-const URL = "http://localhost:3001/login"
 const cookies = new Cookies()
 
 const Login = () => {
+
+    const [error, setError] = useState(false)
 
     const [login, setLoign] = useState({
         user: '',
@@ -26,7 +27,7 @@ const Login = () => {
 
         try {
             
-            await axios.get(URL, {params: {user: login.user, password: login.password}})
+            await axios.get('/login', {params: {user: login.user, password: login.password}})
             .then(response => {
                 return response.data
             })
@@ -42,7 +43,7 @@ const Login = () => {
                     window.location.href="./crud"
                 
                 } else {
-                    alert('El usuario o la contraseña no son correcto')
+                    setError(true)
                 }
             })
         
@@ -82,6 +83,10 @@ const Login = () => {
                     value={login.password} 
                     onChange={handleChange} 
                 />
+                
+                {
+                    error === true && <p className={style.pLogin}>Usuario o contraseña incorrecto</p>
+                }
 
                 <button className={style}>Iniciar Sesion</button>
                 

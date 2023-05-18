@@ -55,11 +55,9 @@ form button {
 
 .pError {
     color: red;
-    border: none;
-    margin-top: 0;
-    font-size: 15px;
-    font-weight: 600;
-    font-family: 'Montserrat', sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+    /* font-family: 'Montserrat', sans-serif; */
 }
 
 label {

@@ -4,11 +4,6 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 
-// URL del servidor
-const URL = "http://localhost:3001/turno"
-const URL_VIERNES = "http://localhost:3001/turno/viernes"
-const URL_SABADO = "http://localhost:3001/turno/sabado"
-
 const cookies = new Cookies()
 
 const DataTable = () => {
@@ -21,7 +16,7 @@ const DataTable = () => {
 
     // Peticion Delete para eliminar los turnos
     const peticionDelete = async (id) => {
-        await axios.delete(`${URL}/${id}`)
+        await axios.delete(`/turno/${id}`)
         .then(response => {
             fetchData()
         })
@@ -31,8 +26,8 @@ const DataTable = () => {
     const fetchData = async () => {
         try {
           axios.all([
-            axios.get(URL_VIERNES),
-            axios.get(URL_SABADO)
+            axios.get('/turno/viernes'),
+            axios.get('/turno/sabado')
           ]).then(
             axios.spread((viernes, sabado) => {
               setViernes(viernes.data)
@@ -81,7 +76,6 @@ const DataTable = () => {
                 <table className='table table-striped .table-responsive'>
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Apellido</th>
                             <th scope="col">Numero</th>
@@ -94,13 +88,12 @@ const DataTable = () => {
                             // Mapeamos todos los turnos y los mostramos en la tabla
                             viernes.map((element) => (
                                 <tr key={element._id}>
-                                    <th scope="row">{element.id}</th>
                                     <td>{element.name}</td>
                                     <td>{element.lastName}</td>
                                     <td>{element.number}</td>
                                     <td>{element.dia}</td>
                                     <td>{element.hora}</td>
-                                    <td><button onClick={() => peticionDelete(element.id)} className='btn btn-dark'>Eliminar</button></td>
+                                    <td><button onClick={() => peticionDelete(element._id)} className='btn btn-dark'>Eliminar</button></td>
                                 </tr>
                             ))
                         }
@@ -113,7 +106,6 @@ const DataTable = () => {
                 <table className='table table-striped .table-responsive'>
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Apellido</th>
                             <th scope="col">Numero</th>
@@ -126,13 +118,12 @@ const DataTable = () => {
                             // Mapeamos todos los turnos y los mostramos en la tabla
                             sabado.map((element) => (
                                 <tr key={element._id}>
-                                    <th scope="row">{element.id}</th>
                                     <td>{element.name}</td>
                                     <td>{element.lastName}</td>
                                     <td>{element.number}</td>
                                     <td>{element.dia}</td>
                                     <td>{element.hora}</td>
-                                    <td><button onClick={() => peticionDelete(element.id)} className='btn btn-dark'>Eliminar</button></td>
+                                    <td><button onClick={() => peticionDelete(element._id)} className='btn btn-dark'>Eliminar</button></td>
                                 </tr>
                             ))
                         }

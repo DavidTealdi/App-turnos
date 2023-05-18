@@ -4,16 +4,12 @@ import validate from '../validate'
 import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-// URL al servidor para enviar el formulario
-const URL = 'http://localhost:3001/turno'
-// URL al servidor para traer los trunos
-const UrlGetTunros = "http://localhost:3001/getturnos" 
 
 // Varianble para guardar las opciones del select de hora viernes
-const viernesHoras = [ {value: "Seleccione una hora"}, {value: '8:00hs'}, {value: '8:30hs'}, {value: '9:00hs'}, {value: '9:30hs'}, {value: '10:00hs'}, {value: '10:30hs'}, {value: '11:00hs'}, {value: '11:30hs'}, {value: '12:00hs'}, {value: '13:00hs'}, {value: '13:30hs'}, {value: '14:00hs'}, {value: '14:30hs'}, {value: '15:00hs'} ]
+const viernesHoras = [ {value: "Seleccione una hora"}, {value: '9:00hs'}, {value: '9:30hs'}, {value: '10:00hs'}, {value: '10:30hs'}, {value: '11:00hs'}, {value: '11:30hs'}, {value: '14:00hs'}, {value: '14:30hs'}, {value: '15:00hs'} ]
 
 // Varianble para guardar las opciones del select de hora viernes
-const sabadoHoras = [ {value: "Seleccione una hora"}, {value: '8:00hs'}, {value: '8:30hs'}, {value: '9:00hs'}, {value: '9:30hs'}, {value: '10:00hs'}, {value: '10:30hs'}, {value: '11:00hs'}, {value: '11:30hs'}, {value: '12:00hs'}, {value: '13:00hs'}, {value: '13:30hs'}, {value: '14:00hs'}, {value: '14:30hs'}, {value: '15:00hs'} ]
+const sabadoHoras = [ {value: "Seleccione una hora"}, {value: '9:00hs'}, {value: '9:30hs'}, {value: '10:00hs'}, {value: '10:30hs'}, {value: '11:00hs'}, {value: '11:30hs'}, {value: '14:00hs'}, {value: '14:30hs'}, {value: '15:00hs'} ]
 
 const Form = () => {
 
@@ -94,7 +90,7 @@ const Form = () => {
 
             try {
                 
-                const response = await axios.post(URL, fromViernes)
+                const response = await axios.post('/turno', fromViernes)
 
                 console.log(response.data)
                 
@@ -121,7 +117,7 @@ const Form = () => {
             
             try {
                 
-                const response = await axios.post(URL, fromSabado)
+                const response = await axios.post('/turno', fromSabado)
 
                 console.log(response.data)
                 
@@ -150,7 +146,7 @@ const Form = () => {
 
         try {
         
-            await axios.get(UrlGetTunros)
+            await axios.get('/getturnos')
             .then(response => {
                 return response
             })
@@ -277,7 +273,7 @@ const Form = () => {
                         </div>
                 }
                                     
-                <button disabled={!input.name || !input.lastName || error.name || error.lastName}> Guardar </button>
+                <button disabled={!input.name || !input.lastName || error.name || error.lastName} > Guardar </button>
                 
             </form>
             
