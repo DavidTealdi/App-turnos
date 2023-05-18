@@ -6,7 +6,6 @@ import Form from './Componet/Form/Form';
 import Login from './Componet/Login/Login';
 import DataTable from './Componet/DataTable/DataTable';
 import Footer from './Componet/FooterWeb/Footer';
-import NewUser from './Componet/newUser/NewUser';
 
 
 function App() {
@@ -30,8 +29,6 @@ function App() {
         <Route path='/login' element={<Login/>}/>
 
         <Route path='/crud' element={<DataTable/>}/>
-
-        <Route path='/user' element={<NewUser/>}/>
 
       </Routes>
     </div>
