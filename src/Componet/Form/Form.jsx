@@ -10,10 +10,10 @@ const URL = 'http://localhost:3001/turno'
 const UrlGetTunros = "http://localhost:3001/getturnos" 
 
 // Varianble para guardar las opciones del select de hora viernes
-const viernesHoras = [ {value: "Seleccione una hora"}, {value: '8hs'}, {value: '8:30hs'}, {value: '9hs'}, {value: '9:30hs'}, {value: '10hs'}, {value: '10:30hs'}, {value: '11hs'}, {value: '11:30hs'}, {value: '12hs'}, {value: '13hs'}, {value: '13:30hs'}, {value: '14hs'}, {value: '14:30hs'}, {value: '15hs'} ]
+const viernesHoras = [ {value: "Seleccione una hora"}, {value: '8:00hs'}, {value: '8:30hs'}, {value: '9:00hs'}, {value: '9:30hs'}, {value: '10:00hs'}, {value: '10:30hs'}, {value: '11:00hs'}, {value: '11:30hs'}, {value: '12:00hs'}, {value: '13:00hs'}, {value: '13:30hs'}, {value: '14:00hs'}, {value: '14:30hs'}, {value: '15:00hs'} ]
 
 // Varianble para guardar las opciones del select de hora viernes
-const sabadoHoras = [ {value: "Seleccione una hora"}, {value: '8hs'}, {value: '8:30hs'}, {value: '9hs'}, {value: '9:30hs'}, {value: '10hs'}, {value: '10:30hs'}, {value: '11hs'}, {value: '11:30hs'}, {value: '12hs'}, {value: '13hs'}, {value: '13:30hs'}, {value: '14hs'}, {value: '14:30hs'}, {value: '15hs'} ]
+const sabadoHoras = [ {value: "Seleccione una hora"}, {value: '8:00hs'}, {value: '8:30hs'}, {value: '9:00hs'}, {value: '9:30hs'}, {value: '10:00hs'}, {value: '10:30hs'}, {value: '11:00hs'}, {value: '11:30hs'}, {value: '12:00hs'}, {value: '13:00hs'}, {value: '13:30hs'}, {value: '14:00hs'}, {value: '14:30hs'}, {value: '15:00hs'} ]
 
 const Form = () => {
 
@@ -50,12 +50,16 @@ const Form = () => {
     const viernesOnchage = (event) => {
         setViernes(event.target.value)
 
+        setSabado('')
+
         setTurnos(true) // ponemos el estado del mensaje de turno seleccionado en true
     }
 
     // Funcion para guardar la hora del sabado seleccionada
     const sabadoOnchage = (event) => {
         setSabado(event.target.value)
+
+        setViernes('')
 
         setTurnos(true) // ponemos el estado del mensaje de turno seleccionado en true
     }
@@ -156,7 +160,7 @@ const Form = () => {
 
                 let hora_viernes = document.getElementById("horaViernes");
                 let hora_sabado = document.getElementById("horaSabado");
-
+                
         
                 for (let i = 0; i < array.length; i++) {
                         
@@ -165,6 +169,7 @@ const Form = () => {
                         for (let v = 0; v < hora_viernes.length; v++) {
                                 
                             if (hora_viernes.options[v].value === array[i].hora) {
+                                
                                 hora_viernes.remove(v);
                             }
                         }
@@ -230,7 +235,7 @@ const Form = () => {
                     onChange={handleInput} 
                 />
                 {/* Mensaje de error */}
-                {error.number && <p className={style.pError}>{error.number}</p>}
+                {/* {error.number && <p className={style.pError}>{error.number}</p>} */}
 
                 <label htmlFor='hour'> Viernes </label>
                 <select id='horaViernes' value={horaViernes} onChange={viernesOnchage}>

@@ -24,7 +24,6 @@ const DataTable = () => {
         await axios.delete(`${URL}/${id}`)
         .then(response => {
             fetchData()
-            // console.log(response)
         })
     }
 
@@ -36,7 +35,6 @@ const DataTable = () => {
             axios.get(URL_SABADO)
           ]).then(
             axios.spread((viernes, sabado) => {
-              console.log(viernes)
               setViernes(viernes.data)
               setSabado(sabado.data)
             })
@@ -95,7 +93,7 @@ const DataTable = () => {
                         {
                             // Mapeamos todos los turnos y los mostramos en la tabla
                             viernes.map((element) => (
-                                <tr key={element.id}>
+                                <tr key={element._id}>
                                     <th scope="row">{element.id}</th>
                                     <td>{element.name}</td>
                                     <td>{element.lastName}</td>
@@ -127,7 +125,7 @@ const DataTable = () => {
                         {
                             // Mapeamos todos los turnos y los mostramos en la tabla
                             sabado.map((element) => (
-                                <tr key={element.id}>
+                                <tr key={element._id}>
                                     <th scope="row">{element.id}</th>
                                     <td>{element.name}</td>
                                     <td>{element.lastName}</td>

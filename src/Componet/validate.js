@@ -35,14 +35,6 @@ const validate = (input) => {
         }
     }
 
-    // if (!/^\d{7,14}$/.test(input.number)) {
-    //     error.number = 'No ingrese espacios entre numero ni caracteres especiales'
-    // }
-
-    // if (input.number.length < 10) {
-    //     error.number = 'Numero inválido. Minimo 10 caracteres'
-    // }
-
     return error
 }
 
