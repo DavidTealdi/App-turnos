@@ -2,7 +2,6 @@ import style from './Login.module.css'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
-import { NavLink } from 'react-router-dom'
 
 const cookies = new Cookies()
 
@@ -64,10 +63,6 @@ const Login = () => {
 
     return (
         <div className={style.login}>
-
-            <NavLink to='/user'>
-                <button>Crear Usuario</button>
-            </NavLink>
 
             <form onSubmit={handleOnSubmit} className={style.form_login}>
 
