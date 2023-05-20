@@ -12,7 +12,6 @@ axios.defaults.baseURL = "https://back-end-turnos-mongodb-production.up.railway.
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-      <App />
+    <App />
   </BrowserRouter>
-  
 );
