@@ -2,23 +2,29 @@ import style from './Login.module.css'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 const cookies = new Cookies()
 
 const Login = () => {
 
+    // Si el usuario quizo iniciar sesion con un user o password incorrecto lanzamos un error
     const [error, setError] = useState(false)
 
+    // Guardamos lo que el usuario escribio en los input para consultar en la debe si el user y password existen
     const [login, setLoign] = useState({
         user: '',
         password: ''
     })
+
+    const [showPwd, setShowPwd] =  useState(false)
 
     const handleChange = (event) => {
         setLoign({
             ...login,
             [event.target.name]: event.target.value
         })
+        setError(false)
     }
 
     const handleOnSubmit = async (event) => {
@@ -59,8 +65,6 @@ const Login = () => {
         }
     }) 
 
-    //select * from "Login" where user = (user que mandamos) and password = (password que mandamos)
-
     return (
         <div className={style.login}>
 
@@ -76,21 +80,35 @@ const Login = () => {
                 />
 
                 <label htmlFor="password" className={style.label_login}>Contraseña</label>
-                <input className={style.input_login} 
-                    type="password" 
-                    name='password'
-                    placeholder='Contraseña' 
-                    value={login.password} 
-                    onChange={handleChange} 
-                />
+                <div className={style.diviconsLogin}>
+
+                    <input className={style.input}
+                        type={showPwd ? "text" : "password"} 
+                        name='password'
+                        placeholder='Contraseña' 
+                        value={login.password} 
+                        onChange={handleChange} 
+                    />
+                    
+                    <div onClick={() => setShowPwd(!showPwd)}>
+                        {
+                            showPwd 
+                                ? <i class="fa-regular fa-eye" id={style.id}></i> 
+                                : <i class="fa-regular fa-eye-slash" id={style.id}></i> 
+                            
+                        }
+                    </div>     
+                       
+                </div>
                 
                 {
-                    error === true && <p className={style.pLogin}>Usuario o contraseña incorrecto</p>
+                    error === true && <p className={style.pLogin}>usuario o contraseña incorrecto</p>
                 }
 
-                <button className={style}>Iniciar Sesion</button>
+                <button className={style.button}>Iniciar Sesion</button>
                 
             </form>
+
         </div>
     )
 }

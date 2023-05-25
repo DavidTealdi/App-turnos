@@ -7,31 +7,32 @@ import Login from './Componet/Login/Login';
 import DataTable from './Componet/DataTable/DataTable';
 import Footer from './Componet/FooterWeb/Footer';
 
-
 function App() {
+
   return (
-    <div className="App">
+      <div className="App">
+            
+        <Routes>
 
-      <Routes>
-
-        <Route path='/' element={[
-          
+          <Route path='/' element={[
+            
             <ButtonLogin/>,
-
+            
             <Title/>, 
-          
+            
             <Form/>,
-
+            
             <Footer/>
           ]} 
-        />
+          />
 
-        <Route path='/login' element={<Login/>}/>
+          <Route path='/login' element={<Login/>}/>
 
-        <Route path='/crud' element={<DataTable/>}/>
+          <Route path='/crud' element={<DataTable/>}/>
 
-      </Routes>
-    </div>
+        </Routes>
+     
+      </div>
   );
 }
 

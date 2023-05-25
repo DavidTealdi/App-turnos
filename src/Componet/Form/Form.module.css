@@ -34,11 +34,15 @@ form input {
     width: 100%;
     height: 30px;
     padding: 23px;
-    margin-bottom: 0;
     border-radius: .3rem;
     font-size: 17px;
     margin-bottom: 20px;
     border: 1px solid #000;
+}
+
+input:focus {
+    border: 3px solid #0075FF;
+    outline: none;
 }
 
 form button {
@@ -57,7 +61,6 @@ form button {
     color: red;
     font-size: 17px;
     font-weight: 500;
-    /* font-family: 'Montserrat', sans-serif; */
 }
 
 label {
@@ -72,9 +75,13 @@ select {
     cursor: pointer;
 }
 
+select:focus {
+    border: 3px solid #0075FF;
+    outline: none;
+}
+
 option {
     text-align: center;
-    /* margin: 2px; */
 }
 
 .pDayHour {

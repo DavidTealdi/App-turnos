@@ -16,31 +16,65 @@
 }
 
 .label_login {
-    margin-top: 2rem;
+    margin-bottom: 0;
 }
   
 .form_login .input_login {
     width: 95%;
     height: 30px;
     padding: 22px;
-    margin-bottom: 20px;
     border: 1px solid #000;
     font-size: 16px;
 }
 
-.form_login .button_login {
-    margin-top: 20px;
-    padding: 8px 15px;
-    font-size: 16px;
-    border: none;
-    background-color: #196BA2;
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
+.input_login:focus {
+    border: 3px solid #0075FF;
+    outline: none;
+}
+
+.diviconsLogin {
+    position: relative;
+    z-index: 90;
+    width: 95%;
+}
+
+.input {
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+    padding: 0 40px 0 10px;
+    transform: .3s ease all;
+}
+
+.input:focus {
+    border: 3px solid #0075FF;
+    outline: none;
+}
+
+#id{
+    position: absolute;
+    right: 17px;
+    bottom: 30px;
+    z-index: 100;
+    font-size: 22px;
+}
+
+.button {
+    margin-top: 0;
 }
 
 .pLogin {
     color: red;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 18px;
+}
+
+
+
+@media (max-width: 400px) {
+    
+    .diviconsLogin {
+        right: 10px;
+    }
+    
 }

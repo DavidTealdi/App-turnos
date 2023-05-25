@@ -29,7 +29,6 @@ const Form = () => {
 
     const [turno, setTurnos] = useState(false) // Estado para manejar el mensaje de turno seleccionado
 
-
     // Funcion para almacenar los valores de los input en los estado y verificar error 
     const handleInput = (event) => {
         setInput({
@@ -105,7 +104,7 @@ const Form = () => {
                 if (horaViernes !== '') setViernes('')
                 if (horaSabado !== '') setSabado('')
 
-                setTimeout(() => setMsg(false), 8000)
+                setTimeout(() => setMsg(false), 6000)
             
             } catch (error) {
                 
@@ -201,7 +200,7 @@ const Form = () => {
             <form  onSubmit={handleOnSubmit}>
                 
                 <label htmlFor="name"> Nombre </label>
-                <input 
+                <input
                     type="text" 
                     name="name" 
                     placeholder="Nombre" 
