@@ -4,12 +4,6 @@
 
 body {
   margin: 0;
-  /* background-image: url('./img/barber6.jpeg');
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-  background-color: black; */
 }
 
 @media (max-width: 400px) {

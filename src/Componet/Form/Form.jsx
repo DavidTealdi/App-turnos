@@ -1,9 +1,9 @@
-import style from './Form.module.css'
 import {useEffect, useState } from 'react'
-import validate from '../validate'
 import axios from 'axios'
-import 'bootstrap/dist/css/bootstrap.min.css'
-
+import {Formulario, ContenedorBotonCentrado, Boton, MensajeExito, MensajeError, SelectForm, LabelForm, DivHora, DiaHora, SpanTurno } from '../../elementos/Formularios' ;
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import Input from '../Input';
 
 // Varianble para guardar las opciones del select de hora viernes
 const viernesHoras = [ {value: "Seleccione una hora"}, {value: '9:00hs'}, {value: '9:30hs'}, {value: '10:00hs'}, {value: '10:30hs'}, {value: '11:00hs'}, {value: '11:30hs'}, {value: '14:00hs'}, {value: '14:30hs'}, {value: '15:00hs'} ]
@@ -11,37 +11,25 @@ const viernesHoras = [ {value: "Seleccione una hora"}, {value: '9:00hs'}, {value
 // Varianble para guardar las opciones del select de hora viernes
 const sabadoHoras = [ {value: "Seleccione una hora"}, {value: '9:00hs'}, {value: '9:30hs'}, {value: '10:00hs'}, {value: '10:30hs'}, {value: '11:00hs'}, {value: '11:30hs'}, {value: '14:00hs'}, {value: '14:30hs'}, {value: '15:00hs'} ]
 
+
 const Form = () => {
+    const [name, cambiarName] = useState({campo: '', valido: null}); // Estado para almacenar el nombre
+	const [lastName, cambiarLastName] = useState({campo: '', valido: null}); // Estado para almacenar el apellido
+	const [number, cambiarNumber] = useState({campo: '', valido: null}); // Estado para almacenar el numero
+	
+	const [formularioValido, cambiarFormularioValido] = useState(null);
+	
+	const [horaViernes, setViernes] = useState("") 
+    const [horaSabado, setSabado] = useState("")
+	
+	const [turno, setTurnos] = useState(false) // Estado para manejar el mensaje de turno seleccionado
 
-    const [input, setInput] = useState({  // Estado para almacenar los input del form
-        name: '', 
-        lastName: '',
-        number: '',
-    })
-    
-    const [horaViernes, setViernes] = useState("")  // Estado para almacenar la opcion de hora del viernes
-    
-    const [horaSabado, setSabado] = useState("") // Estado para almacenar la opcion de hora del sabado
+    const expresiones = {
+		nombre: /^[a-zA-ZÀ-ÿ\s]{3,40}$/, // Letras y espacios, pueden llevar acentos.
+		telefono: /^\d{7,10}$/ // 7 a 14 numeros.
+	}
 
-    const [error, setError] = useState({})  // Estado para almacenar los errores de los input del formulario
-
-    const [msg, setMsg] = useState(false) // Estado para manejar el mensaje de turno guardado
-
-    const [turno, setTurnos] = useState(false) // Estado para manejar el mensaje de turno seleccionado
-
-    // Funcion para almacenar los valores de los input en los estado y verificar error 
-    const handleInput = (event) => {
-        setInput({
-            ...input,
-            [event.target.name]: event.target.value
-        })
-        setError(validate({
-            ...input,
-            [event.target.name]: event.target.value
-        }))
-    }
-
-    // Funcion para guardar la hora del viernes seleccionada
+	// Funcion para guardar la hora del viernes seleccionada
     const viernesOnchage = (event) => {
         setViernes(event.target.value)
 
@@ -59,89 +47,83 @@ const Form = () => {
         setTurnos(true) // ponemos el estado del mensaje de turno seleccionado en true
     }
 
-
-    // Objeto para guardar todos los estado 
+	// Objeto para guardar todos los estado 
     // y enviarlos al servidor si el turno es viernes
-    let fromViernes = {
-        name: input.name,
-        lastName: input.lastName,
-        number: input.number,
+	let fromViernes = {
+        name: name.campo,
+        lastName: lastName.campo,
+        number: number.campo,
         dia: 'Viernes',
         hora: horaViernes 
     }
 
-    // Objeto para guardar todos los estado 
+	// Objeto para guardar todos los estado 
     // y enviarlos al servidor si el turno es sabado
-    let fromSabado = {
-        name: input.name,
-        lastName: input.lastName,
-        number: input.number,
+	let fromSabado = {
+        name: name.campo,
+        lastName: lastName.campo,
+        number: number.campo,
         dia: 'Sabado',
         hora: horaSabado
     }
 
-    // Funcion para para mandar todo al servidor cuando se haga click en guardar
-    const handleOnSubmit = async (event) => {
+	// Funcion para para mandar todo al servidor cuando se haga click en guardar
+    const onSubmit = async (e) => {
+		e.preventDefault();
 
-        event.preventDefault()
+		// Verificamos si no hay errores en los input para poder enviarlos al servidor
+		if(name.valido === 'true' && lastName.valido === 'true') {
 
-        if (horaViernes !== '') {
+			// Si el estado horaViernes no esta vacio, enviamos un turno dia viernes
+			if (horaViernes !== '') {
+				
+				try {
+					
+					const response = await axios.post('/turno', fromViernes) // Envia el objeto fromViernes
 
-            try {
-                
-                const response = await axios.post('/turno', fromViernes)
+					// Limpiarmos todo los estado
+					cambiarFormularioValido(true);
+					cambiarName({campo: '', valido: ''});
+					cambiarLastName({campo: '', valido: null});
+					cambiarNumber({campo: '', valido: null});
 
-                console.log(response.data)
-                
-                setMsg(true)
+					if (horaViernes !== '') setViernes('')
+                	if (horaSabado !== '') setSabado('')
 
-                setInput({
-                    name: '',
-                    lastName: '',
-                    number: ''
-                })
+				} catch (error) {
+					alert("404 Not Found: Error al guardar el turno")
+				}
+			}
 
-                if (horaViernes !== '') setViernes('')
-                if (horaSabado !== '') setSabado('')
+			// Si el estado horaSabado no esta vacio, enviamos un turno dia sabado
+			if (horaSabado !== '') {
+				
+				try {
+					
+					const response = await axios.post('/turno', fromSabado) // Envia el objeto fromSabado
 
-                setTimeout(() => setMsg(false), 6000)
-            
-            } catch (error) {
-                
-                console.log(error.response.data)    
-            }
-        }
+					// Limpiarmos todo los estado
+					cambiarFormularioValido(true);
+					cambiarName({campo: '', valido: ''});
+					cambiarLastName({campo: '', valido: null});
+					cambiarNumber({campo: '', valido: null});
 
-        if (horaSabado !== '') {
-            
-            try {
-                
-                const response = await axios.post('/turno', fromSabado)
+					if (horaViernes !== '') setViernes('')
+                	if (horaSabado !== '') setSabado('')
 
-                console.log(response.data)
-                
-                setMsg(true)
+				} catch (error) {
+					alert("404 Not Found: Error al guardar el turno")
+				}
+			}
+			
+		} else {
+			// Si hay algun error lanzamos el mensaje de error
+			cambiarFormularioValido(false);
+		}
+	}
 
-                setInput({
-                    name: '',
-                    lastName: '',
-                    number: ''
-                })
-
-                if (horaViernes !== '') setViernes('')
-                if (horaSabado !== '') setSabado('')
-
-                setTimeout(() => setMsg(false), 6000)
-            
-            } catch (error) {
-                
-                console.log(error.response.data)    
-            }
-        }
-    }
-
-    // Funcion para traer todos los turnos que hay en la DB y sacarlos del select 
-    const horasFn = async () => {
+	// Funcion para traer todos los turnos que hay en la DB y sacarlos del select 
+	const horasFn = async () => {
 
         try {
         
@@ -168,7 +150,7 @@ const Form = () => {
                                 hora_viernes.remove(v);
                             }
                         }
-                            
+                             
                     }
                         
                     if  (response.data[i].dia === 'Sabado') {
@@ -185,96 +167,98 @@ const Form = () => {
             })
         }
         catch (error) {
-            console.log(error)
+			console.log(error.message)
         }
     }
 
-    // Cuando se monte el compenente llama a la funcion horasFn()
-    useEffect(() => {
+	// Cuando se monte el compenente llama a la funcion horasFn()
+	useEffect(() => {
         horasFn()
     }, [])
 
     return (
         <section>
 
-            <form  onSubmit={handleOnSubmit}>
-                
-                <label htmlFor="name"> Nombre </label>
-                <input
-                    type="text" 
-                    name="name" 
-                    placeholder="Nombre" 
-                    value={input.name} 
-                    onChange={handleInput} 
-                />
-                {/* Mensaje de error */}
-                {error.name && <p className={style.pError}>{error.name}</p>}  
+            <Formulario action="" onSubmit={onSubmit}>
+				<Input
+					estado={name}
+					cambiarEstado={cambiarName}
+					tipo="text"
+					label="Nombre"
+					placeholder="Nombre"
+					name="name"
+					leyendaError="El nombre debe contener de 3 a 20 digitos"
+					expresionRegular={expresiones.nombre}
+				/>
+				<Input
+					estado={lastName}
+					cambiarEstado={cambiarLastName}
+					tipo="text"
+					label="Apellido"
+					placeholder='Apellido'
+					name="lastName"
+					leyendaError="El apellido debe contener de 3 a 20 digitos"
+					expresionRegular={expresiones.nombre}
+				/>
+				<Input
+					estado={number}
+					cambiarEstado={cambiarNumber}
+					tipo="text"
+					label="Numero de celular (Opcional)"
+					placeholder="Numero"
+					name="telefono"
+					leyendaError="El telefono solo puede contener numeros y el maximo son 10 dígitos sin 0 ni 15."
+					expresionRegular={expresiones.telefono}
+				/>
 
-                <label htmlFor="lastName"> Apellido </label>
-                <input 
-                    type="text" 
-                    name="lastName" 
-                    placeholder="Apellido" 
-                    value={input.lastName} 
-                    onChange={handleInput} 
-                />
-                {/* Mensaje de error */}
-                {error.lastName && <p className={style.pError}>{error.lastName}</p>}
+				<LabelForm htmlFor='hour'> Viernes </LabelForm>
+				<SelectForm id='horaViernes' value={horaViernes} onChange={viernesOnchage} >
+					{                         
+						// Se mapea el array de objetos ViernesHoras y por cada valor se muestra una opcion
+						viernesHoras.map(hour => <option key={hour.value} value={hour.value}> {hour.value} </option>)
+					}
+				</SelectForm>
 
-                <label htmlFor="number"> Numero de celular (opcional) </label>
-                <input 
-                    type="text" 
-                    name="number" 
-                    placeholder="Numero" 
-                    value={input.number} 
-                    onChange={handleInput} 
-                />
-                {/* Mensaje de error */}
-                {/* {error.number && <p className={style.pError}>{error.number}</p>} */}
+				<LabelForm htmlFor='hour'> Sabado </LabelForm>
+				<SelectForm id='horaSabado' value={horaSabado} onChange={sabadoOnchage} >
+					{
+						// Se mapea el array de objetos sabadoHoras y por cada valor se muestra una opcion
+						sabadoHoras.map(hour => <option key={hour.value} value={hour.value}> {hour.value} </option>)
+					}
+				</SelectForm>
 
-                <label htmlFor='hour'> Viernes </label>
-                <select id='horaViernes' value={horaViernes} onChange={viernesOnchage}>
-                    {
-                        // Se mapea el array de objetos ViernesHoras y por cada valor se muestra una opcion
-                        viernesHoras.map(hour => <option key={hour.value} value={hour.value}> {hour.value} </option>)
-                    }
-                </select>
+				<DivHora>
+					{
+						// Muestra en pantalla con una etiqueta P el dia y hora seleccionado
+						turno === true 
+							
+							&&  
 
-                <label htmlFor='hour'> Sabado </label>
-                <select id='horaSabado' value={horaSabado} onChange={sabadoOnchage}>
-                    {
-                        // Se mapea el array de objetos sabadoHoras y por cada valor se muestra una opcion
-                        sabadoHoras.map(hour => <option key={hour.value} value={hour.value}> {hour.value} </option>)
-                    }
-                </select>
-            
-                {
-                    // Muestra en pantalla con una etiqueta P el dia y hora seleccionado
-                    turno === true 
-                        
-                        &&  
+						horaViernes 
+						
+							? <DiaHora><SpanTurno>Turno: </SpanTurno> Viernes {horaViernes}</DiaHora>
+						
+						: horaSabado 
+							? <DiaHora><SpanTurno>Turno: </SpanTurno> Sabado {horaSabado}</DiaHora> 
+						
+						: null
+					}
+				</DivHora>
 
-                    horaViernes 
-                    
-                        ? <p className={style.pDayHour}><span>Turno: </span>Viernes {horaViernes}</p>
-                    
-                    : horaSabado 
-                        ? <p className={style.pDayHour}><span>Turno: </span>Sabado {horaSabado}</p> 
-                    
-                    : null
-                }
+				{formularioValido === false && <MensajeError>
+					<p>
+						<FontAwesomeIcon icon={faExclamationTriangle}/>
+						<b>Error:</b> Formulario Incorrecto.
+					</p>
+				</MensajeError>}
+				<ContenedorBotonCentrado>
+					
+					{formularioValido === true && <MensajeExito>Formulario enviado exitosamente!</MensajeExito>}
+					
+					<Boton>Guardar</Boton>
+				</ContenedorBotonCentrado>
 
-                {
-                    // Mesaje para avisar que el turno se guardo
-                    msg === true &&
-                        <div class="alert alert-success" role="alert">
-                            Turno Guardado Correctamente *
-                        </div>
-                }
-                                    
-                <button disabled={!input.name || !input.lastName || error.name || error.lastName} > Guardar </button>
-                
-            </form>
+			</Formulario>
             
         </section>
     )

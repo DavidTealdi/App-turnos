@@ -2,7 +2,7 @@ import style from './Login.module.css'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import { DivFormLogin, FormLogin, LabelLogin, InputLogin, DivInput, InputDiv, ButtonLogin, Mesaje } from '../../elementos/Login'
 
 const cookies = new Cookies()
 
@@ -54,8 +54,7 @@ const Login = () => {
             })
         
         } catch (error) {
-
-            console.log(error.response.data)    
+            alert("404 Not Found: Error al iniciar sesion") 
         }
     }
 
@@ -66,50 +65,55 @@ const Login = () => {
     }) 
 
     return (
-        <div className={style.login}>
+        <section>
+        
+            <DivFormLogin>
 
-            <form onSubmit={handleOnSubmit} className={style.form_login}>
+                <FormLogin onSubmit={handleOnSubmit}>
 
-                <label htmlFor="user" className={style.label_login}>Usuario</label>
-                <input className={style.input_login} 
-                    type="text" 
-                    name='user'
-                    placeholder='Usuario' 
-                    value={login.user} 
-                    onChange={handleChange} 
-                />
-
-                <label htmlFor="password" className={style.label_login}>Contraseña</label>
-                <div className={style.diviconsLogin}>
-
-                    <input className={style.input}
-                        type={showPwd ? "text" : "password"} 
-                        name='password'
-                        placeholder='Contraseña' 
-                        value={login.password} 
+                    <LabelLogin htmlFor="user">Usuario</LabelLogin>
+                    <InputLogin
+                        type="text" 
+                        name='user'
+                        placeholder='Usuario' 
+                        value={login.user} 
                         onChange={handleChange} 
                     />
+
+                    <LabelLogin htmlFor="password">Contraseña</LabelLogin>
                     
-                    <div onClick={() => setShowPwd(!showPwd)}>
-                        {
-                            showPwd 
-                                ? <i class="fa-regular fa-eye" id={style.id}></i> 
-                                : <i class="fa-regular fa-eye-slash" id={style.id}></i> 
-                            
-                        }
-                    </div>     
-                       
-                </div>
-                
-                {
-                    error === true && <p className={style.pLogin}>usuario o contraseña incorrecto</p>
-                }
+                    <DivInput>
 
-                <button className={style.button}>Iniciar Sesion</button>
-                
-            </form>
+                        <InputDiv
+                            type={showPwd ? "text" : "password"} 
+                            name='password'
+                            placeholder='Contraseña' 
+                            value={login.password} 
+                            onChange={handleChange} 
+                        />
+                        
+                        <div onClick={() => setShowPwd(!showPwd)}>
+                            {
+                                showPwd 
+                                    ? <i class="fa-regular fa-eye" id={style.id}></i> 
+                                    : <i class="fa-regular fa-eye-slash" id={style.id}></i> 
+                                
+                            }
+                        </div>     
+                        
+                    </DivInput>
+                    
+                    {
+                        error === true && <Mesaje>usuario o contraseña incorrecto</Mesaje>
+                    }
 
-        </div>
+                    <ButtonLogin className={style.button}>Iniciar Sesion</ButtonLogin>
+                    
+                </FormLogin>
+
+            </DivFormLogin>
+
+        </section>
     )
 }
 

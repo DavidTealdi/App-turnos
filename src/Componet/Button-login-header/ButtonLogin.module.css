@@ -15,7 +15,13 @@
     padding: 8px 15px;
     border-radius: .3rem;
     font-size: 16px;
+    font-weight: 500;
     cursor: pointer;
+}
+
+.button:hover {
+    background-color: #fff;
+    color: #000;
 }
 
 

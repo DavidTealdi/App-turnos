@@ -35,7 +35,7 @@ const DataTable = () => {
             })
           );
         } catch (error) {
-          console.log(error);
+            alert("404 Not Found")
         }
     };
 
