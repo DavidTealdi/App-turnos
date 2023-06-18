@@ -62,8 +62,9 @@ const DataTable = () => {
     return (
         <div>
 
-            
-            <button onClick={cerrarSesion} className={style.button}>Cerrar Sesion</button>
+            <div className={style.divNavBar}>
+                <button onClick={cerrarSesion} className={style.button}>Cerrar Sesion</button>
+            </div>
             
             <h1 className={style.title_table}>Turnos Disponibles</h1>
             

@@ -26,7 +26,7 @@ const Form = () => {
 
     const expresiones = {
 		nombre: /^[a-zA-ZÀ-ÿ\s]{3,40}$/, // Letras y espacios, pueden llevar acentos.
-		telefono: /^\d{7,10}$/ // 7 a 14 numeros.
+		telefono: /^\d{7,14}$/ // 7 a 14 numeros.
 	}
 
 	// Funcion para guardar la hora del viernes seleccionada
@@ -91,7 +91,7 @@ const Form = () => {
                 	if (horaSabado !== '') setSabado('')
 
 				} catch (error) {
-					alert("404 Not Found: Error al guardar el turno")
+					alert("404 Not Found: Error al guardar el turno")				
 				}
 			}
 
@@ -114,7 +114,7 @@ const Form = () => {
 				} catch (error) {
 					alert("404 Not Found: Error al guardar el turno")
 				}
-			}
+			} 
 			
 		} else {
 			// Si hay algun error lanzamos el mensaje de error
@@ -187,7 +187,7 @@ const Form = () => {
 					label="Nombre"
 					placeholder="Nombre"
 					name="name"
-					leyendaError="El nombre debe contener de 3 a 20 digitos"
+					leyendaError="El nombre debe contener de 3 a 20 letras"
 					expresionRegular={expresiones.nombre}
 				/>
 				<Input
@@ -197,7 +197,7 @@ const Form = () => {
 					label="Apellido"
 					placeholder='Apellido'
 					name="lastName"
-					leyendaError="El apellido debe contener de 3 a 20 digitos"
+					leyendaError="El apellido debe contener de 3 a 20 letras"
 					expresionRegular={expresiones.nombre}
 				/>
 				<Input

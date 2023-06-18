@@ -2,12 +2,13 @@ import './App.css';
 
 import { Route, Routes } from 'react-router-dom';
 
-import ButtonLogin from './Componet/Button-login-header/ButtonLogin';
+import NavBar from './Componet/NavBar/NavBar';
 import Title from './Componet/Title/Title';
 import Form from './Componet/Form/Form';
 import Login from './Componet/Login/Login';
 import DataTable from './Componet/DataTable/DataTable';
 import Footer from './Componet/FooterWeb/Footer';
+import FormDelete from './Componet/EliminarTurno/FormDelete';
 
 function App() { 
 
@@ -18,15 +19,17 @@ function App() {
 
           <Route path='/' element={[
             
-            <ButtonLogin/>,
+            <NavBar/>,
             
             <Title/>, 
             
             <Form/>,
             
-            <Footer/>
+            <Footer/>,
           ]} 
           />
+
+          <Route path='/delete' element={<FormDelete/>}/>
 
           <Route path='/login' element={<Login/>}/>
 
