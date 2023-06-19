@@ -3,10 +3,13 @@ import style from './FormDelete.module.css'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import axios from 'axios'
+import toast, { Toaster } from 'react-hot-toast';
 
 import {Formulario, ContenedorBotonCentrado, Boton, MensajeExito, MensajeError, SelectForm, LabelForm, DivHora, DiaHora, SpanTurno } from '../../elementos/Formularios' ;
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+
 import Input from '../Input';
 
 
@@ -82,9 +85,25 @@ const Form = () => {
                 }
 
             } catch (error) {
-                if (error.message === 'Turno no encontrado') alert(error)
+                if (error.message === 'Turno no encontrado') {
+					toast.error('Turno no encontrado', {
+						duration: 10000,
+						position: 'top-center',
+						style: {
+						background: "#212121",
+						color: "#fff"
+						}
+					})
+				}
                  
-                else alert("404 Not Found: Error del Servidor")
+                else toast.error('Error: el servidor no responde', {
+					duration: 10000,
+					position: 'top-center',
+					style: {
+					  background: "#212121",
+					  color: "#fff"
+					}
+				})
             }
 			
 			
@@ -96,6 +115,8 @@ const Form = () => {
 
     return (
         <section>
+
+			<Toaster/>
 
 			<div className={style.divNavbar}>
 				<NavLink to='/'>

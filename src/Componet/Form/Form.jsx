@@ -1,9 +1,14 @@
 import {useEffect, useState } from 'react'
+import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios'
+
 import {Formulario, ContenedorBotonCentrado, Boton, MensajeExito, MensajeError, SelectForm, LabelForm, DivHora, DiaHora, SpanTurno } from '../../elementos/Formularios' ;
+
+import Input from '../Input';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import Input from '../Input';
+
 
 // Varianble para guardar las opciones del select de hora viernes
 const viernesHoras = [ {value: "Seleccione una hora"}, {value: '9:00hs'}, {value: '9:30hs'}, {value: '10:00hs'}, {value: '10:30hs'}, {value: '11:00hs'}, {value: '11:30hs'}, {value: '14:00hs'}, {value: '14:30hs'}, {value: '15:00hs'} ]
@@ -91,7 +96,14 @@ const Form = () => {
                 	if (horaSabado !== '') setSabado('')
 
 				} catch (error) {
-					alert("404 Not Found: Error al guardar el turno")				
+					toast.error('Error: el servidor no responde', {
+						duration: 7000,
+						position: 'top-center',
+						style: {
+						  background: "#212121",
+						  color: "#fff"
+						}
+					})			
 				}
 			}
 
@@ -112,7 +124,14 @@ const Form = () => {
                 	if (horaSabado !== '') setSabado('')
 
 				} catch (error) {
-					alert("404 Not Found: Error al guardar el turno")
+					toast.error('Error: el servidor no responde', {
+						duration: 10000,
+						position: 'top-center',
+						style: {
+						  background: "#212121",
+						  color: "#fff"
+						}
+					})
 				}
 			} 
 			
@@ -178,6 +197,7 @@ const Form = () => {
 
     return (
         <section>
+			<Toaster/>
 
             <Formulario action="" onSubmit={onSubmit}>
 				<Input

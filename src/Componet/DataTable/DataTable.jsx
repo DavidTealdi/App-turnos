@@ -1,8 +1,10 @@
 import style from './DateTable.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
+
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
+import toast, { Toaster } from 'react-hot-toast';
 
 const cookies = new Cookies()
 
@@ -35,7 +37,14 @@ const DataTable = () => {
             })
           );
         } catch (error) {
-            alert("404 Not Found")
+            toast.error('Error: el servidor no responde', {
+                duration: 10000,
+                position: 'top-center',
+                style: {
+                  background: "#212121",
+                  color: "#fff"
+                }
+            })
         }
     };
 
@@ -62,6 +71,8 @@ const DataTable = () => {
     return (
         <div>
 
+            <Toaster/>
+
             <div className={style.divNavBar}>
                 <button onClick={cerrarSesion} className={style.button}>Cerrar Sesion</button>
             </div>
@@ -69,8 +80,6 @@ const DataTable = () => {
             <h1 className={style.title_table}>Turnos Disponibles</h1>
             
             <div className={style.divTable}>
-
-                {/* viernes */}
 
                 <h3>Viernes</h3>
 
@@ -101,7 +110,6 @@ const DataTable = () => {
                     </tbody>
                 </table>
 
-                {/* sabado */}
                 <h3>Sabado</h3>
 
                 <table className='table table-striped .table-responsive'>

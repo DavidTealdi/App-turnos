@@ -1,7 +1,10 @@
 import style from './Login.module.css'
+
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
+import toast, { Toaster } from 'react-hot-toast';
+
 import { DivFormLogin, FormLogin, LabelLogin, InputLogin, DivInput, InputDiv, ButtonLogin, Mesaje } from '../../elementos/Login'
 
 const cookies = new Cookies()
@@ -54,7 +57,14 @@ const Login = () => {
             })
         
         } catch (error) {
-            alert("404 Not Found: Error al iniciar sesion") 
+            toast.error('Error: el servidor no responde', {
+                duration: 10000,
+                position: 'top-center',
+                style: {
+                  background: "#212121",
+                  color: "#fff"
+                }
+            })
         }
     }
 
@@ -66,7 +76,8 @@ const Login = () => {
 
     return (
         <section>
-        
+            <Toaster/>
+
             <DivFormLogin>
 
                 <FormLogin onSubmit={handleOnSubmit}>
