@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast';
 
-import {Formulario, ContenedorBotonCentrado, Boton, MensajeExito, MensajeError, SelectForm, LabelForm, DivHora, DiaHora, SpanTurno } from '../../elementos/Formularios' ;
+import {Formulario, ContenedorBotonCentrado, Boton, MensajeExito, MensajeError, SelectForm, LabelForm, DivHora, DiaHora, SpanTurno, MensajeTurnoNoEncontrado } from '../../elementos/Formularios' ;
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
@@ -30,6 +30,8 @@ const Form = () => {
 	const [formularioValido, cambiarFormularioValido] = useState(null);
 	
 	const [turno, setTurnos] = useState(false) // Estado para manejar el mensaje de turno seleccionado
+
+	const [turnoNoEncontrado, setTurnoNoEncontrado] = useState(false)
 
     const expresiones = {
 		nombre: /^[a-zA-ZÀ-ÿ\s]{3,40}$/, // Letras y espacios, pueden llevar acentos.
@@ -74,7 +76,6 @@ const Form = () => {
                 
                 else {
                     // Limpiarmos todo los estado
-                    cambiarFormularioValido(true);
                     cambiarName({campo: '', valido: ''});
                     cambiarLastName({campo: '', valido: null});
 
@@ -82,18 +83,19 @@ const Form = () => {
                     setHora('')
 
                     setTurnos(false)
+
+					cambiarFormularioValido(true);
+					setTimeout(() => {
+						cambiarFormularioValido(null);
+					}, 6000);
                 }
 
             } catch (error) {
                 if (error.message === 'Turno no encontrado') {
-					toast.error('Turno no encontrado', {
-						duration: 10000,
-						position: 'top-center',
-						style: {
-						background: "#212121",
-						color: "#fff"
-						}
-					})
+					setTurnoNoEncontrado(true)
+					setTimeout(() => {
+						setTurnoNoEncontrado(false)
+					}, 4000);
 				}
                  
                 else toast.error('Error: el servidor no responde', {
@@ -110,6 +112,9 @@ const Form = () => {
 		} else {
 			// Si hay algun error lanzamos el mensaje de error
 			cambiarFormularioValido(false);
+			setTimeout(() => {
+				cambiarFormularioValido(null);
+			}, 4000);
 		}
 	}
 
@@ -171,12 +176,19 @@ const Form = () => {
 					}
 				</DivHora>
 
-				{formularioValido === false && <MensajeError>
-					<p>
-						<FontAwesomeIcon icon={faExclamationTriangle}/>
-						<b>Error:</b> Formulario Incorrecto.
-					</p>
-				</MensajeError>}
+				{
+					turnoNoEncontrado === true && <MensajeTurnoNoEncontrado><b>Error:</b> Turno no encontado</MensajeTurnoNoEncontrado>
+				}
+
+				{
+					formularioValido === false && <MensajeError>
+						<p>
+							<FontAwesomeIcon icon={faExclamationTriangle}/>
+							<b>Error:</b> Formulario Incorrecto.
+						</p>
+					</MensajeError>
+				}
+
 				<ContenedorBotonCentrado>
 					
 					{formularioValido === true && <MensajeExito>Turno eliminado exitosamente!</MensajeExito>}

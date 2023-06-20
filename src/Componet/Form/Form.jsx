@@ -87,13 +87,17 @@ const Form = () => {
 					const response = await axios.post('/turno', fromViernes) // Envia el objeto fromViernes
 
 					// Limpiarmos todo los estado
-					cambiarFormularioValido(true);
 					cambiarName({campo: '', valido: ''});
 					cambiarLastName({campo: '', valido: null});
 					cambiarNumber({campo: '', valido: null});
 
 					if (horaViernes !== '') setViernes('')
                 	if (horaSabado !== '') setSabado('')
+
+					cambiarFormularioValido(true);
+					setTimeout(() => {
+						cambiarFormularioValido(null);
+					}, 6000);
 
 				} catch (error) {
 					toast.error('Error: el servidor no responde', {
@@ -115,13 +119,17 @@ const Form = () => {
 					const response = await axios.post('/turno', fromSabado) // Envia el objeto fromSabado
 
 					// Limpiarmos todo los estado
-					cambiarFormularioValido(true);
 					cambiarName({campo: '', valido: ''});
 					cambiarLastName({campo: '', valido: null});
 					cambiarNumber({campo: '', valido: null});
 
 					if (horaViernes !== '') setViernes('')
                 	if (horaSabado !== '') setSabado('')
+
+					cambiarFormularioValido(true);
+					setTimeout(() => {
+						cambiarFormularioValido(null);
+					}, 6000);
 
 				} catch (error) {
 					toast.error('Error: el servidor no responde', {
@@ -138,6 +146,9 @@ const Form = () => {
 		} else {
 			// Si hay algun error lanzamos el mensaje de error
 			cambiarFormularioValido(false);
+			setTimeout(() => {
+				cambiarFormularioValido(null);
+			}, 4000);
 		}
 	}
 
@@ -273,7 +284,7 @@ const Form = () => {
 				</MensajeError>}
 				<ContenedorBotonCentrado>
 					
-					{formularioValido === true && <MensajeExito>Formulario enviado exitosamente!</MensajeExito>}
+					{formularioValido === true && <MensajeExito>Turno guardado exitosamente!</MensajeExito>}
 					
 					<Boton>Guardar</Boton>
 				</ContenedorBotonCentrado>

@@ -284,6 +284,19 @@ const MensajeError = styled.div`
 	}	
 `;
 
+const MensajeTurnoNoEncontrado = styled.p`
+	/* display: flex; */
+	/* justify-content: center; */
+	/* align-items: center; */
+	margin: auto;
+	height: 45px;
+	line-height: 45px;
+	background: #F66060;
+	padding: 0px 15px;
+	border-radius: 3px;
+	/* overflow: hidden; */
+`;
+
 export {
 	Formulario,
 	Label,
@@ -299,5 +312,6 @@ export {
 	ContenedorBotonCentrado,
 	Boton,
 	MensajeExito,
-	MensajeError
+	MensajeError,
+	MensajeTurnoNoEncontrado
 };
