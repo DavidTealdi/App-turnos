@@ -1,13 +1,13 @@
-// import './index.css';
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
 
-// axios.defaults.baseURL = "http://localhost:3001"
-axios.defaults.baseURL = "https://back-end-turnos-mongodb-production.up.railway.app"
+
+// axios.defaults.baseURL = process.env.REACT_APP_URL_LOCAL
+
+axios.defaults.baseURL = process.env.REACT_APP_URL_REMOTA
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

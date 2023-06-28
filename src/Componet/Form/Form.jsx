@@ -11,10 +11,10 @@ import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 
 // Varianble para guardar las opciones del select de hora viernes
-const viernesHoras = [ {value: "Seleccione una hora"}, {value: '9:00hs'}, {value: '9:30hs'}, {value: '10:00hs'}, {value: '10:30hs'}, {value: '11:00hs'}, {value: '11:30hs'}, {value: '14:00hs'}, {value: '14:30hs'}, {value: '15:00hs'} ]
+const viernesHoras = [ {value: "Seleccione una hora"}, {value: '08:40hs'}, {value: '09:00hs'}, {value: '09:30hs'}, {value: '10:00hs'}, {value: '10:30hs'}, {value: '11:00hs'}, {value: '11:20hs'}, {value: '11:40hs'}, {value: '12:00hs'}, {value: '12:20hs'}, {value: '16:00hs'}, {value: '16:20hs'}, {value: '16:40hs'}, {value: '17:00hs'}, {value: '17:30hs'}, {value: '18:00hs'}, {value: '18:30hs'}, {value: '19:00hs'}, {value: '19:20hs'}, {value: '19:40hs'}]
 
-// Varianble para guardar las opciones del select de hora viernes
-const sabadoHoras = [ {value: "Seleccione una hora"}, {value: '9:00hs'}, {value: '9:30hs'}, {value: '10:00hs'}, {value: '10:30hs'}, {value: '11:00hs'}, {value: '11:30hs'}, {value: '14:00hs'}, {value: '14:30hs'}, {value: '15:00hs'} ]
+// Varianble para guardar las opciones del select de hora sabado
+const sabadoHoras = [ {value: "Seleccione una hora"}, {value: '8:40hs'}, {value: '9:00hs'}, {value: '09:30hs'}, {value: '10:00hs'}, {value: '10:20hs'}, {value: '10:40hs'}, {value: '11:00hs'}, {value: '11:30hs'}, {value: '12:00hs'}, {value: '12:30hs'}, {value: '13:00hs'}, {value: '13:20hs'}, {value: '13:40hs'}, {value: '18:20hs'}, {value: '18:40hs'}, {value: '19:00hs'}, {value: '19:20hs'}, {value: '19:40hs'}]
 
 
 const Form = () => {
@@ -26,13 +26,14 @@ const Form = () => {
 	
 	const [horaViernes, setViernes] = useState("") 
     const [horaSabado, setSabado] = useState("")
-	
+
 	const [turno, setTurnos] = useState(false) // Estado para manejar el mensaje de turno seleccionado
 
     const expresiones = {
 		nombre: /^[a-zA-ZÀ-ÿ\s]{3,40}$/, // Letras y espacios, pueden llevar acentos.
 		telefono: /^\d{7,14}$/ // 7 a 14 numeros.
 	}
+
 
 	// Funcion para guardar la hora del viernes seleccionada
     const viernesOnchage = (event) => {
@@ -52,6 +53,7 @@ const Form = () => {
         setTurnos(true) // ponemos el estado del mensaje de turno seleccionado en true
     }
 
+	
 	// Objeto para guardar todos los estado 
     // y enviarlos al servidor si el turno es viernes
 	let fromViernes = {
@@ -261,11 +263,9 @@ const Form = () => {
 				<DivHora>
 					{
 						// Muestra en pantalla con una etiqueta P el dia y hora seleccionado
-						turno === true 
-							
-							&&  
-
-						horaViernes 
+						turno === true &&  
+						
+						 horaViernes 
 						
 							? <DiaHora><SpanTurno>Turno: </SpanTurno> Viernes {horaViernes}</DiaHora>
 						
