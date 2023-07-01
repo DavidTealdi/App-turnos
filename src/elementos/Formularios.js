@@ -243,6 +243,36 @@ const ContenedorBotonCentrado = styled.div`
 	@media (max-width: 800px){
 		grid-column: span 1;
 	}
+
+	@media (max-width: 2000px){
+		margin-left: 400px;
+		margin-right: 400px;
+	}
+
+	@media (max-width: 1500px){
+		margin-left: 200px;
+		margin-right: 200px;
+	}
+
+	@media (max-width: 1010px){
+		margin-left: 100px;
+		margin-right: 100px;
+	}
+
+	@media (max-width: 800px){
+		margin-left: 50px;
+		margin-right: 50px;
+	}
+
+	@media (max-width: 700px){
+		margin-left: 30px;
+		margin-right: 30px;
+	}
+
+	@media (max-width: 600px){
+		margin-left: 10px;
+		margin-right: 10px;
+	}
 `;
 
 const Boton = styled.button`
