@@ -10,7 +10,7 @@ import {Formulario, ContenedorBotonCentrado, Boton, MensajeExito, MensajeError, 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
-import Input from '../Input';
+import Input from '../input/Input';
 
 
 // Varianble para guardar las opciones del select de hora viernes

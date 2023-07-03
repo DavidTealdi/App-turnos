@@ -1,4 +1,4 @@
-import style from '../FooterWeb/Footer.module.css'
+import style from './Footer.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 const Footer = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input, Label, GrupoInput, LeyendaError, IconoValidacion} from './../elementos/Formularios';
+import {Input, Label, GrupoInput, LeyendaError, IconoValidacion} from '../../elementos/Formularios';
 import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 const ComponenteInput = ({estado, cambiarEstado, tipo, label, placeholder, name, leyendaError, expresionRegular, funcion}) => {
