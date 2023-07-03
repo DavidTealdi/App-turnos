@@ -5,9 +5,9 @@ import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
 
 
-axios.defaults.baseURL = process.env.REACT_APP_URL_LOCAL
+// axios.defaults.baseURL = process.env.REACT_APP_URL_LOCAL
 
-// axios.defaults.baseURL = process.env.REACT_APP_URL_REMOTA
+axios.defaults.baseURL = process.env.REACT_APP_URL_REMOTA
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
