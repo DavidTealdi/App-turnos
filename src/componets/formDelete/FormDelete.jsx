@@ -1,7 +1,4 @@
-import style from './FormDelete.module.css'
-
 import { useState } from 'react'
-import { NavLink } from 'react-router-dom';
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -122,14 +119,6 @@ const Form = () => {
         <section>
 
 			<Toaster/>
-
-			<div className={style.divNavbar}>
-				<NavLink to='/'>
-					<button className={style.buttonVolverFormDelete}>Volver</button>
-				</NavLink>
-			</div>
-
-            <h1 className={style.h2TitleFormDelete}>Eliminar turno</h1>
 
             <Formulario onSubmit={onSubmit}>
 				<Input
