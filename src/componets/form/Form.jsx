@@ -11,10 +11,10 @@ import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 
 // Varianble para guardar las opciones del select de hora viernes
-const viernesHoras = [ {value: "Seleccione una hora"}, {value: '08:40hs'}, {value: '09:00hs'}, {value: '09:30hs'}, {value: '10:00hs'}, {value: '10:30hs'}, {value: '11:00hs'}, {value: '11:20hs'}, {value: '11:40hs'}, {value: '12:00hs'}, {value: '12:20hs'}, {value: '16:00hs'}, {value: '16:20hs'}, {value: '16:40hs'}, {value: '17:00hs'}, {value: '18:00hs'}, {value: '19:00hs'}, {value: '19:20hs'}, {value: '19:40hs'}, {value: '20:00hs'}, {value: '20:20hs'}]
+const viernesHoras = [ {value: "Seleccione una hora"}, {value: '08:40hs'}, {value: '09:00hs'}, {value: '09:30hs'}, {value: '10:00hs'}, {value: '10:20hs'}, {value: '10:40hs'}, {value: '11:00hs'}, {value: '11:30hs'}, {value: '12:00hs'}, {value: '12:20hs'}, {value: '16:00hs'}, {value: '16:20hs'}, {value: '16:40hs'}, {value: '17:00hs'}, {value: '17:30hs'}, {value: '18:30hs'}, {value: '19:20hs'}, {value: '19:40hs'},{value: '20:00hs'}]
 
 // Varianble para guardar las opciones del select de hora sabado
-const sabadoHoras = [ {value: "Seleccione una hora"}, {value: '08:40hs'}, {value: '09:00hs'}, {value: '09:30hs'}, {value: '10:00hs'}, {value: '10:20hs'}, {value: '10:40hs'}, {value: '11:00hs'}, {value: '11:20hs'}, {value: '11:40hs'}, {value: '12:00hs'}, {value: '12:20hs'}, {value: '12:40hs'}, {value: '13:00hs'}, {value: '13:20hs'}]
+const sabadoHoras = [ {value: "Seleccione una hora"}, {value: '08:40hs'}, {value: '09:00hs'}, {value: '09:20hs'}, {value: '09:40hs'}, {value: '10:00hs'}, {value: '10:30hs'}, {value: '11:00hs'}, {value: '11:20hs'}, {value: '11:40hs'}, {value: '12:00hs'}, {value: '17:40hs'}, {value: '18:00hs'}, {value: '18:20hs'}, {value: '18:40hs'}, {value: '19:00hs'}, {value: '19:20hs'}, {value: '19:40hs'}, {value: '20:00hs'}]
 
 
 const Form = () => {
