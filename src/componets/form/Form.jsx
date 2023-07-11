@@ -80,39 +80,40 @@ const Form = () => {
 
 		// Verificamos si no hay errores en los input para poder enviarlos al servidor
 		if(name.valido === 'true' && lastName.valido === 'true') {
-
+				
 			// Si el estado horaViernes no esta vacio, enviamos un turno dia viernes
 			if (horaViernes !== '') {
 				
 				try {
 					
 					const response = await axios.post('/turno', fromViernes) // Envia el objeto fromViernes
-
+					
 					// Limpiarmos todo los estado
 					cambiarName({campo: '', valido: ''});
 					cambiarLastName({campo: '', valido: null});
 					cambiarNumber({campo: '', valido: null});
-
+					
 					if (horaViernes !== '') setViernes('')
-                	if (horaSabado !== '') setSabado('')
+					if (horaSabado !== '') setSabado('')
 
 					cambiarFormularioValido(true);
 					setTimeout(() => {
 						cambiarFormularioValido(null);
 					}, 6000);
-
+				
 				} catch (error) {
 					toast.error('Error: el servidor no responde', {
 						duration: 7000,
 						position: 'top-center',
 						style: {
-						  background: "#212121",
-						  color: "#fff"
+							background: "#212121",
+							color: "#fff"
 						}
 					})			
 				}
 			}
 
+		
 			// Si el estado horaSabado no esta vacio, enviamos un turno dia sabado
 			if (horaSabado !== '') {
 				
@@ -126,7 +127,7 @@ const Form = () => {
 					cambiarNumber({campo: '', valido: null});
 
 					if (horaViernes !== '') setViernes('')
-                	if (horaSabado !== '') setSabado('')
+					if (horaSabado !== '') setSabado('')
 
 					cambiarFormularioValido(true);
 					setTimeout(() => {
@@ -138,8 +139,8 @@ const Form = () => {
 						duration: 10000,
 						position: 'top-center',
 						style: {
-						  background: "#212121",
-						  color: "#fff"
+						background: "#212121",
+						color: "#fff"
 						}
 					})
 				}

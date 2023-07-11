@@ -36,35 +36,32 @@ const Login = () => {
 
         try {
             
-            await axios.get('/login', {params: {user: login.user, password: login.password}})
-            .then(response => {
-                return response.data
-            })
-            .then(data => {
-                if(data.length > 0) {
+            const respuesta =  await axios.post('/autho/login', {}, {params: {user: login.user, password: login.password}})
 
-                    let respuesta = data[0]
+            if(respuesta) {
+                cookies.set('id', respuesta.data.id, {path: "/"})
+                cookies.set('user', respuesta.data.user, {path: "/"})
+                cookies.set('password', respuesta.data.password, {path: "/"})
 
-                    cookies.set('id', respuesta.id, {path: "/"})
-                    cookies.set('user', respuesta.user, {path: "/"})
-                    cookies.set('password', respuesta.password, {path: "/"})
-                    
-                    window.location.href="./crud"
-                
-                } else {
-                    setError(true)
-                }
-            })
+                window.location.href="./crud"
+            } 
         
         } catch (error) {
-            toast.error('Error: el servidor no responde', {
-                duration: 10000,
-                position: 'top-center',
-                style: {
-                  background: "#212121",
-                  color: "#fff"
-                }
-            })
+
+            if(error.message === "Network Error"){
+            
+                toast.error('Error: el servidor no responde', {
+                    duration: 10000,
+                    position: 'top-center',
+                    style: {
+                        background: "#212121",
+                        color: "#fff"
+                    }
+                })
+            
+            } else {
+                setError(true)
+            }
         }
     }
 
