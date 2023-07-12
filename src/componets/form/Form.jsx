@@ -29,6 +29,8 @@ const Form = () => {
 
 	const [turno, setTurnos] = useState(false) // Estado para manejar el mensaje de turno seleccionado
 
+	const [turnoExistente, setTurnoExistente] = useState(false)
+
     const expresiones = {
 		nombre: /^[a-zA-ZÀ-ÿ\s]{3,40}$/, // Letras y espacios, pueden llevar acentos.
 		telefono: /^\d{7,14}$/ // 7 a 14 numeros.
@@ -74,75 +76,107 @@ const Form = () => {
         hora: horaSabado
     }
 
+	let turnosEV = {
+		dia: 'Viernes',
+        hora: horaViernes 
+	}
+
+	let turnosES = {
+		dia: 'Sabado',
+        hora: horaSabado
+	}
+
 	// Funcion para para mandar todo al servidor cuando se haga click en guardar
     const onSubmit = async (e) => {
 		e.preventDefault();
 
 		// Verificamos si no hay errores en los input para poder enviarlos al servidor
 		if(name.valido === 'true' && lastName.valido === 'true') {
-				
+
 			// Si el estado horaViernes no esta vacio, enviamos un turno dia viernes
 			if (horaViernes !== '') {
 				
-				try {
-					
-					const response = await axios.post('/turno', fromViernes) // Envia el objeto fromViernes
-					
-					// Limpiarmos todo los estado
-					cambiarName({campo: '', valido: ''});
-					cambiarLastName({campo: '', valido: null});
-					cambiarNumber({campo: '', valido: null});
-					
-					if (horaViernes !== '') setViernes('')
-					if (horaSabado !== '') setSabado('')
+				const turnosExistentes = await axios.post('/turnverification', turnosEV)
 
-					cambiarFormularioValido(true);
-					setTimeout(() => {
-						cambiarFormularioValido(null);
-					}, 6000);
+				if (turnosExistentes.data.message === 'El turno no existe') {
+
+					try {
+						
+						const response = await axios.post('/turno', fromViernes) // Envia el objeto fromViernes
+						
+						// Limpiarmos todo los estado
+						cambiarName({campo: '', valido: ''});
+						cambiarLastName({campo: '', valido: null});
+						cambiarNumber({campo: '', valido: null});
+						
+						if (horaViernes !== '') setViernes('')
+						if (horaSabado !== '') setSabado('')
+
+						cambiarFormularioValido(true);
+						setTimeout(() => {
+							cambiarFormularioValido(null);
+						}, 6000);
+					
+					} catch (error) {
+						toast.error('Error: el servidor no responde', {
+							duration: 7000,
+							position: 'top-center',
+							style: {
+								background: "#212121",
+								color: "#fff"
+							}
+						})			
+					}
 				
-				} catch (error) {
-					toast.error('Error: el servidor no responde', {
-						duration: 7000,
-						position: 'top-center',
-						style: {
-							background: "#212121",
-							color: "#fff"
-						}
-					})			
-				}
+				} else {
+					setTurnoExistente(true)
+					setTimeout(() => {
+						setTurnoExistente(false);
+					}, 4000);
+				}	 	
 			}
 
 		
 			// Si el estado horaSabado no esta vacio, enviamos un turno dia sabado
 			if (horaSabado !== '') {
 				
-				try {
-					
-					const response = await axios.post('/turno', fromSabado) // Envia el objeto fromSabado
+				const turnosExistentes = await axios.post('/turnverification', turnosES)
 
-					// Limpiarmos todo los estado
-					cambiarName({campo: '', valido: ''});
-					cambiarLastName({campo: '', valido: null});
-					cambiarNumber({campo: '', valido: null});
+				if (turnosExistentes.data.message === 'El turno no existe') {
+				
+					try {
+						
+						const response = await axios.post('/turno', fromSabado) // Envia el objeto fromSabado
 
-					if (horaViernes !== '') setViernes('')
-					if (horaSabado !== '') setSabado('')
+						// Limpiarmos todo los estado
+						cambiarName({campo: '', valido: ''});
+						cambiarLastName({campo: '', valido: null});
+						cambiarNumber({campo: '', valido: null});
 
-					cambiarFormularioValido(true);
+						if (horaViernes !== '') setViernes('')
+						if (horaSabado !== '') setSabado('')
+
+						cambiarFormularioValido(true);
+						setTimeout(() => {
+							cambiarFormularioValido(null);
+						}, 6000);	
+
+					} catch (error) {
+						toast.error('Error: el servidor no responde', {
+							duration: 10000,
+							position: 'top-center',
+							style: {
+							background: "#212121",
+							color: "#fff"
+							}
+						})
+					}
+				
+				} else {
+					setTurnoExistente(true)
 					setTimeout(() => {
-						cambiarFormularioValido(null);
-					}, 6000);
-
-				} catch (error) {
-					toast.error('Error: el servidor no responde', {
-						duration: 10000,
-						position: 'top-center',
-						style: {
-						background: "#212121",
-						color: "#fff"
-						}
-					})
+						setTurnoExistente(false);
+					}, 4000);
 				}
 			} 
 			
@@ -276,6 +310,13 @@ const Form = () => {
 						: null
 					}
 				</DivHora>
+
+				{turnoExistente === true && <MensajeError>
+					<p>
+						<FontAwesomeIcon icon={faExclamationTriangle}/>
+						<b>Error:</b> El turno ya existe.
+					</p>
+				</MensajeError>}
 
 				{formularioValido === false && <MensajeError>
 					<p>
