@@ -117,55 +117,75 @@ const Form = () => {
 			// Si el estado horaViernes no esta vacio, enviamos un turno dia viernes
 			if (horaViernes !== '') {
 				
-				// Peticion al backend para ver si existe o no el turno
-				const turnosExistentes = await axios.post('/turnverification', turnosEV)
+				// trycatch que verifica si existe el turno o no
+				try {
+					
+					// Peticion al backend para ver si existe o no el turno
+					const turnosExistentes = await axios.post('/turnverification', turnosEV)
+				
+					// Si el turno exite lanzamos un error
+					if (turnosExistentes.data.message === 'El turno no existe') {
 
-				// Si el turno exite lanzamos un error
-				if (turnosExistentes.data.message === 'El turno no existe') {
+						// trycatch para enviar el turno al backend
+						try {
+							
+							// Envia el objeto fromViernes
+							const response = await axios.post('/turno', fromViernes)
+							
 
-					try {
+							// Limpiarmos todo los estado
+							cambiarName({campo: '', valido: ''});
+							cambiarLastName({campo: '', valido: null});
+							cambiarNumber({campo: '', valido: null});
+							if (horaViernes !== '') setViernes('')
+							if (horaSabado !== '') setSabado('')
+
+							// Ponemos el estado de loading en false para dejar de mostrarlo
+							setLoading(false)
+
+							// mostramos el mensaje de turno guardado
+							cambiarFormularioValido(true);
+							setTimeout(() => {
+								cambiarFormularioValido(null);
+							}, 6000);
 						
-						// Envia el objeto fromViernes
-						const response = await axios.post('/turno', fromViernes)
-						
-
-						// Limpiarmos todo los estado
-						cambiarName({campo: '', valido: ''});
-						cambiarLastName({campo: '', valido: null});
-						cambiarNumber({campo: '', valido: null});
-						if (horaViernes !== '') setViernes('')
-						if (horaSabado !== '') setSabado('')
-
+						} catch (error) {
+							// Si la peticion de axios salio mal mostramos el mensaje flotante
+							toast.error('Error: el servidor no responde', {
+								duration: 7000,
+								position: 'top-center',
+								style: {
+									background: "#212121",
+									color: "#fff"
+								}
+							})			
+						}
+					
+					} else {
 						// Ponemos el estado de loading en false para dejar de mostrarlo
 						setLoading(false)
 
-						// mostramos el mensaje de turno guardado
-						cambiarFormularioValido(true);
+						// si el turno existe mostramos un mensaje de error
+						setTurnoExistente(true)
 						setTimeout(() => {
-							cambiarFormularioValido(null);
-						}, 6000);
-					
-					} catch (error) {
-						// Si la peticion de axios salio mal mostramos el mensaje flotante
-						toast.error('Error: el servidor no responde', {
-							duration: 7000,
-							position: 'top-center',
-							style: {
-								background: "#212121",
-								color: "#fff"
-							}
-						})			
+							setTurnoExistente(false);
+						}, 4000);
 					}
 				
-				} else {
+				} catch (error) {
+					
 					// Ponemos el estado de loading en false para dejar de mostrarlo
 					setLoading(false)
 
-					// si el turno existe mostramos un mensaje de error
-					setTurnoExistente(true)
-					setTimeout(() => {
-						setTurnoExistente(false);
-					}, 4000);
+					// Si la peticion de axios salio mal mostramos el mensaje flotante
+					toast.error('Error: el servidor no responde', {
+						duration: 7000,
+						position: 'top-center',
+						style: {
+							background: "#212121",
+							color: "#fff"
+						}
+					})	
 				}	 	
 			}
 
@@ -173,54 +193,74 @@ const Form = () => {
 			// Si el estado horaSabado no esta vacio, enviamos un turno dia sabado
 			if (horaSabado !== '') {
 				
-				// Peticion al backend para ver si existe o no el turno
-				const turnosExistentes = await axios.post('/turnverification', turnosES)
+				// trycatch que verifica si existe el turno o no
+				try {
+					
+					// Peticion al backend para ver si existe o no el turno
+					const turnosExistentes = await axios.post('/turnverification', turnosES)
 
-				// Si el turno exite lanzamos un error
-				if (turnosExistentes.data.message === 'El turno no existe') {
-				
-					try {
-						
-						// Envia el objeto fromSabado
-						const response = await axios.post('/turno', fromSabado)
+					// Si el turno exite lanzamos un error
+					if (turnosExistentes.data.message === 'El turno no existe') {
+					
+						// trycatch para enviar el turno al backend
+						try {
+							
+							// Envia el objeto fromSabado
+							const response = await axios.post('/turno', fromSabado)
 
-						// Limpiarmos todo los estado
-						cambiarName({campo: '', valido: ''});
-						cambiarLastName({campo: '', valido: null});
-						cambiarNumber({campo: '', valido: null});
-						if (horaViernes !== '') setViernes('')
-						if (horaSabado !== '') setSabado('')
+							// Limpiarmos todo los estado
+							cambiarName({campo: '', valido: ''});
+							cambiarLastName({campo: '', valido: null});
+							cambiarNumber({campo: '', valido: null});
+							if (horaViernes !== '') setViernes('')
+							if (horaSabado !== '') setSabado('')
 
+							// Ponemos el estado de loading en false para dejar de mostrarlo
+							setLoading(false)
+
+							// mostramos el mensaje de turno guardado
+							cambiarFormularioValido(true);
+							setTimeout(() => {
+								cambiarFormularioValido(null);
+							}, 6000);	
+
+						} catch (error) {
+							// Si la peticion de axios salio mal mostramos el mensaje flotante
+							toast.error('Error: el servidor no responde', {
+								duration: 10000,
+								position: 'top-center',
+								style: {
+								background: "#212121",
+								color: "#fff"
+								}
+							})
+						}
+					
+					} else {
 						// Ponemos el estado de loading en false para dejar de mostrarlo
 						setLoading(false)
-
-						// mostramos el mensaje de turno guardado
-						cambiarFormularioValido(true);
+						
+						// si el turno existe mostramos un mensaje de error
+						setTurnoExistente(true)
 						setTimeout(() => {
-							cambiarFormularioValido(null);
-						}, 6000);	
-
-					} catch (error) {
-						// Si la peticion de axios salio mal mostramos el mensaje flotante
-						toast.error('Error: el servidor no responde', {
-							duration: 10000,
-							position: 'top-center',
-							style: {
-							background: "#212121",
-							color: "#fff"
-							}
-						})
+							setTurnoExistente(false);
+						}, 4000);
 					}
-				
-				} else {
+
+				} catch (error) {
+
 					// Ponemos el estado de loading en false para dejar de mostrarlo
 					setLoading(false)
-					
-					// si el turno existe mostramos un mensaje de error
-					setTurnoExistente(true)
-					setTimeout(() => {
-						setTurnoExistente(false);
-					}, 4000);
+
+					// Si la peticion de axios salio mal mostramos el mensaje flotante
+					toast.error('Error: el servidor no responde', {
+						duration: 10000,
+						position: 'top-center',
+						style: {
+						background: "#212121",
+						color: "#fff"
+						}
+					})
 				}
 			} 
 			
