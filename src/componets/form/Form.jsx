@@ -2,12 +2,12 @@ import {useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios'
 
-import {Formulario, ContenedorBotonCentrado, Boton, MensajeExito, MensajeError, SelectForm, LabelForm, DivHora, DiaHora, SpanTurno } from '../../elementos/Formularios' ;
+import {Formulario, ContenedorBotonCentrado, Boton, MensajeExito, MensajeError, SelectForm, LabelForm, DivHora, DiaHora, SpanTurno, Loading } from '../../elementos/Formularios' ;
 
 import Input from '../input/Input';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 
 // Varianble para guardar las opciones del select de hora viernes
@@ -18,18 +18,27 @@ const sabadoHoras = [ {value: "Seleccione una hora"}, {value: '08:40hs'}, {value
 
 
 const Form = () => {
-    const [name, cambiarName] = useState({campo: '', valido: null}); // Estado para almacenar el nombre
-	const [lastName, cambiarLastName] = useState({campo: '', valido: null}); // Estado para almacenar el apellido
-	const [number, cambiarNumber] = useState({campo: '', valido: null}); // Estado para almacenar el numero
+
+	// Estado para almacenar el nombre, apellido y numero
+    const [name, cambiarName] = useState({campo: '', valido: null}); 
+	const [lastName, cambiarLastName] = useState({campo: '', valido: null});
+	const [number, cambiarNumber] = useState({campo: '', valido: null});
 	
+	// Estado para manejar el mensaje de existo
 	const [formularioValido, cambiarFormularioValido] = useState(null);
 	
+	// Estado para guardar la hora seleccionada
 	const [horaViernes, setViernes] = useState("") 
     const [horaSabado, setSabado] = useState("")
 
-	const [turno, setTurnos] = useState(false) // Estado para manejar el mensaje de turno seleccionado
+	// Estado para manejar el mensaje de turno seleccionado
+	const [turno, setTurnos] = useState(false)
 
+	// Estado para manejar el mensaje de turno existente
 	const [turnoExistente, setTurnoExistente] = useState(false)
+
+	// Estado para manejar el mensaje de loading
+	const [loading, setLoading] = useState(false)
 
     const expresiones = {
 		nombre: /^[a-zA-ZÀ-ÿ\s]{3,40}$/, // Letras y espacios, pueden llevar acentos.
@@ -41,18 +50,23 @@ const Form = () => {
     const viernesOnchage = (event) => {
         setViernes(event.target.value)
 
+		// Limpiamos el estado del sabado
         setSabado('')
 
-        setTurnos(true) // ponemos el estado del mensaje de turno seleccionado en true
+		// ponemos el estado del mensaje de turno seleccionado en true
+        setTurnos(true)
     }
 
     // Funcion para guardar la hora del sabado seleccionada
     const sabadoOnchage = (event) => {
+
         setSabado(event.target.value)
 
+		// Limpiamos el estado del viernes
         setViernes('')
 
-        setTurnos(true) // ponemos el estado del mensaje de turno seleccionado en true
+		// ponemos el estado del mensaje de turno seleccionado en true
+        setTurnos(true)
     }
 
 	
@@ -76,11 +90,15 @@ const Form = () => {
         hora: horaSabado
     }
 
+	// Objeto para guardar el turno que seleccione el usuario
+	// y enviarlo al servidor para ver si existe o no el turno
 	let turnosEV = {
 		dia: 'Viernes',
         hora: horaViernes 
 	}
 
+	// Objeto para guardar el turno que seleccione el usuario
+	// y enviarlo al servidor para ver si existe o no el turno
 	let turnosES = {
 		dia: 'Sabado',
         hora: horaSabado
@@ -93,31 +111,42 @@ const Form = () => {
 		// Verificamos si no hay errores en los input para poder enviarlos al servidor
 		if(name.valido === 'true' && lastName.valido === 'true') {
 
+			// Cuando se presiona al boton de guardar, lanzamos el loading
+			setLoading(true)
+
 			// Si el estado horaViernes no esta vacio, enviamos un turno dia viernes
 			if (horaViernes !== '') {
 				
+				// Peticion al backend para ver si existe o no el turno
 				const turnosExistentes = await axios.post('/turnverification', turnosEV)
 
+				// Si el turno exite lanzamos un error
 				if (turnosExistentes.data.message === 'El turno no existe') {
 
 					try {
 						
-						const response = await axios.post('/turno', fromViernes) // Envia el objeto fromViernes
+						// Envia el objeto fromViernes
+						const response = await axios.post('/turno', fromViernes)
 						
+
 						// Limpiarmos todo los estado
 						cambiarName({campo: '', valido: ''});
 						cambiarLastName({campo: '', valido: null});
 						cambiarNumber({campo: '', valido: null});
-						
 						if (horaViernes !== '') setViernes('')
 						if (horaSabado !== '') setSabado('')
 
+						// Ponemos el estado de loading en false para dejar de mostrarlo
+						setLoading(false)
+
+						// mostramos el mensaje de turno guardado
 						cambiarFormularioValido(true);
 						setTimeout(() => {
 							cambiarFormularioValido(null);
 						}, 6000);
 					
 					} catch (error) {
+						// Si la peticion de axios salio mal mostramos el mensaje flotante
 						toast.error('Error: el servidor no responde', {
 							duration: 7000,
 							position: 'top-center',
@@ -129,6 +158,10 @@ const Form = () => {
 					}
 				
 				} else {
+					// Ponemos el estado de loading en false para dejar de mostrarlo
+					setLoading(false)
+
+					// si el turno existe mostramos un mensaje de error
 					setTurnoExistente(true)
 					setTimeout(() => {
 						setTurnoExistente(false);
@@ -140,28 +173,35 @@ const Form = () => {
 			// Si el estado horaSabado no esta vacio, enviamos un turno dia sabado
 			if (horaSabado !== '') {
 				
+				// Peticion al backend para ver si existe o no el turno
 				const turnosExistentes = await axios.post('/turnverification', turnosES)
 
+				// Si el turno exite lanzamos un error
 				if (turnosExistentes.data.message === 'El turno no existe') {
 				
 					try {
 						
-						const response = await axios.post('/turno', fromSabado) // Envia el objeto fromSabado
+						// Envia el objeto fromSabado
+						const response = await axios.post('/turno', fromSabado)
 
 						// Limpiarmos todo los estado
 						cambiarName({campo: '', valido: ''});
 						cambiarLastName({campo: '', valido: null});
 						cambiarNumber({campo: '', valido: null});
-
 						if (horaViernes !== '') setViernes('')
 						if (horaSabado !== '') setSabado('')
 
+						// Ponemos el estado de loading en false para dejar de mostrarlo
+						setLoading(false)
+
+						// mostramos el mensaje de turno guardado
 						cambiarFormularioValido(true);
 						setTimeout(() => {
 							cambiarFormularioValido(null);
 						}, 6000);	
 
 					} catch (error) {
+						// Si la peticion de axios salio mal mostramos el mensaje flotante
 						toast.error('Error: el servidor no responde', {
 							duration: 10000,
 							position: 'top-center',
@@ -173,6 +213,10 @@ const Form = () => {
 					}
 				
 				} else {
+					// Ponemos el estado de loading en false para dejar de mostrarlo
+					setLoading(false)
+					
+					// si el turno existe mostramos un mensaje de error
 					setTurnoExistente(true)
 					setTimeout(() => {
 						setTurnoExistente(false);
@@ -181,7 +225,7 @@ const Form = () => {
 			} 
 			
 		} else {
-			// Si hay algun error lanzamos el mensaje de error
+			// Si hay algun error en el formulario lanzamos el mensaje
 			cambiarFormularioValido(false);
 			setTimeout(() => {
 				cambiarFormularioValido(null);
@@ -245,9 +289,11 @@ const Form = () => {
 
     return (
         <section>
+			{/* Mensaje flotante si el servidor no responde */}
 			<Toaster/>
 
             <Formulario action="" onSubmit={onSubmit}>
+				{/* NOMBRE */}
 				<Input
 					estado={name}
 					cambiarEstado={cambiarName}
@@ -258,6 +304,7 @@ const Form = () => {
 					leyendaError="El nombre debe contener de 3 a 20 letras"
 					expresionRegular={expresiones.nombre}
 				/>
+				{/* APELLIDO */}
 				<Input
 					estado={lastName}
 					cambiarEstado={cambiarLastName}
@@ -268,6 +315,7 @@ const Form = () => {
 					leyendaError="El apellido debe contener de 3 a 20 letras"
 					expresionRegular={expresiones.nombre}
 				/>
+				{/* NUMERO */}
 				<Input
 					estado={number}
 					cambiarEstado={cambiarNumber}
@@ -300,35 +348,60 @@ const Form = () => {
 						// Muestra en pantalla con una etiqueta P el dia y hora seleccionado
 						turno === true &&  
 						
-						 horaViernes 
+							horaViernes 
 						
-							? <DiaHora><SpanTurno>Turno: </SpanTurno> Viernes {horaViernes}</DiaHora>
+								? <DiaHora><SpanTurno>Turno: </SpanTurno> Viernes {horaViernes}</DiaHora>
 						
-						: horaSabado 
-							? <DiaHora><SpanTurno>Turno: </SpanTurno> Sabado {horaSabado}</DiaHora> 
+							: horaSabado 
+								? <DiaHora><SpanTurno>Turno: </SpanTurno> Sabado {horaSabado}</DiaHora> 
 						
-						: null
+							: null
 					}
 				</DivHora>
 
-				{turnoExistente === true && <MensajeError>
-					<p>
-						<FontAwesomeIcon icon={faExclamationTriangle}/>
-						<b>Error:</b> El turno ya existe.
-					</p>
-				</MensajeError>}
+				{	
+					// Loading mintras se guarda el turno
+					loading === true && 
+						<Loading>
+							Guardando Turno...
+						</Loading>
+				}
 
-				{formularioValido === false && <MensajeError>
-					<p>
-						<FontAwesomeIcon icon={faExclamationTriangle}/>
-						<b>Error:</b> Formulario Incorrecto.
-					</p>
-				</MensajeError>}
+				{
+					// Si el turno existe mostramos un mensaje de error
+					turnoExistente === true && 
+						<MensajeError>
+							<p>
+								<FontAwesomeIcon icon={faExclamationTriangle}/>
+								<b>Error:</b> El turno ya existe.
+							</p>
+						</MensajeError>
+				}
+
+				{	
+					// Mensaje de error de formulario
+					formularioValido === false && 
+						<MensajeError>
+							<p>
+								<FontAwesomeIcon icon={faExclamationTriangle}/>
+								<b>Error:</b> Formulario Incorrecto.
+							</p>
+						</MensajeError>
+				}
+
 				<ContenedorBotonCentrado>
 					
-					{formularioValido === true && <MensajeExito>Turno guardado exitosamente!</MensajeExito>}
+					{	
+						// Mensaje de turno guardado
+						formularioValido === true && 
+							<MensajeExito>
+								<FontAwesomeIcon icon={faCheck} style={{marginRight: "8px"}} />
+								¡Turno guardado exitosamente!
+							</MensajeExito>
+					}
 					
 					<Boton>Guardar</Boton>
+
 				</ContenedorBotonCentrado>
 
 			</Formulario>

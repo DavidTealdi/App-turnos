@@ -2,10 +2,10 @@ import { useState } from 'react'
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast';
 
-import {Formulario, ContenedorBotonCentrado, Boton, MensajeExito, MensajeError, SelectForm, LabelForm, DivHora, DiaHora, SpanTurno, MensajeTurnoNoEncontrado } from '../../elementos/Formularios' ;
+import {Formulario, ContenedorBotonCentrado, Boton, MensajeExito, MensajeError, SelectForm, LabelForm, DivHora, DiaHora, SpanTurno, MensajeTurnoNoEncontrado, Loading } from '../../elementos/Formularios' ;
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationTriangle, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 import Input from '../input/Input';
 
@@ -18,17 +18,28 @@ const Horas = [ {value: "Seleccione una hora"}, {value: '08:40hs'}, {value: '09:
 
 
 const Form = () => {
-    const [name, cambiarName] = useState({campo: '', valido: null}); // Estado para almacenar el nombre
-	const [lastName, cambiarLastName] = useState({campo: '', valido: null}); // Estado para almacenar el apellido
 
+	// Estados para almacenar el nombre y apellido
+    const [name, cambiarName] = useState({campo: '', valido: null});
+	const [lastName, cambiarLastName] = useState({campo: '', valido: null});
+
+	// Estado para almacenar el dia seleccionado
     const [dia, setDia] = useState("") 
+
+	// Estado para almacenar la hora seleccionada
     const [hora, setHora] = useState("")
 	
+	// Estado para mostrar el mensaje de turno eliminado
 	const [formularioValido, cambiarFormularioValido] = useState(null);
-	
-	const [turno, setTurnos] = useState(false) // Estado para manejar el mensaje de turno seleccionado
 
+	// Estado para manejar el mensaje de turno seleccionado
+	const [turno, setTurnos] = useState(false)
+
+	// Estado para mostrar mensaje de error si el turno no se encontro para su eliminacion
 	const [turnoNoEncontrado, setTurnoNoEncontrado] = useState(false)
+
+	// Estado para manejar el mensaje de loading
+	const [loading, setLoading] = useState(false)
 
     const expresiones = {
 		nombre: /^[a-zA-ZÀ-ÿ\s]{3,40}$/, // Letras y espacios, pueden llevar acentos.
@@ -46,7 +57,8 @@ const Form = () => {
         
         setHora(event.target.value)
 
-        setTurnos(true) // ponemos el estado del mensaje de turno seleccionado en true
+		// Ponemos el estado del mensaje de turno seleccionado en true
+        setTurnos(true)
     }
 
 	// Objeto para guardar todos los estado 
@@ -64,23 +76,34 @@ const Form = () => {
 
 		// Verificamos si no hay errores en los input para poder enviarlos al servidor
 		if(name.valido === 'true' && lastName.valido === 'true') {
+
+			// Poner el loading en true para mostrarlo
+			setLoading(true)
 				
             try {
-                
-                const response = await axios.delete('/turnodelete', { data: formDelete }) // Envia el objeto fromDelete
 
+                // Envia el objeto fromDelete para eliminar el turno
+                const response = await axios.delete('/turnodelete', { data: formDelete })
+
+				// Si la respuesta del backend es 0 significa que el turno no existe. Entramos en el cacth
                 if (response.data.deletedCount === 0) throw new Error('Turno no encontrado')
                 
+				// Si el turno existe
                 else {
+
                     // Limpiarmos todo los estado
                     cambiarName({campo: '', valido: ''});
                     cambiarLastName({campo: '', valido: null});
-
                     setDia('')
                     setHora('')
 
+					// Dejamos de mostrar el turno a eliminar
                     setTurnos(false)
 
+					// Dejamos de mostrar el loading
+					setLoading(false)
+
+					// Mostramos el mensaje de turno eliminado
 					cambiarFormularioValido(true);
 					setTimeout(() => {
 						cambiarFormularioValido(null);
@@ -88,14 +111,19 @@ const Form = () => {
                 }
 
             } catch (error) {
+				// Dejamos de mostrar el loading
+				setLoading(false)
+
+				// Si el mensaje del back es "Turno no encontrado" mostramos el mensaje de error 
                 if (error.message === 'Turno no encontrado') {
 					setTurnoNoEncontrado(true)
 					setTimeout(() => {
 						setTurnoNoEncontrado(false)
 					}, 4000);
-				}
-                 
-                else toast.error('Error: el servidor no responde', {
+				} 
+
+				// Si el servidor no respode mostramos el mensaje flotante
+				else toast.error('Error: el servidor no responde', {
 					duration: 10000,
 					position: 'top-center',
 					style: {
@@ -107,7 +135,7 @@ const Form = () => {
 			
 			
 		} else {
-			// Si hay algun error lanzamos el mensaje de error
+			// Si hay algun error con el formulario lanzamos el mensaje de error
 			cambiarFormularioValido(false);
 			setTimeout(() => {
 				cambiarFormularioValido(null);
@@ -117,10 +145,13 @@ const Form = () => {
 
     return (
         <section>
-
+			
+			{/* Mensaje flotante */}
 			<Toaster/>
 
             <Formulario onSubmit={onSubmit}>
+
+				{/* Nombre */}
 				<Input
 					estado={name}
 					cambiarEstado={cambiarName}
@@ -131,6 +162,7 @@ const Form = () => {
 					leyendaError="El nombre debe contener de 3 a 20 digitos"
 					expresionRegular={expresiones.nombre}
 				/>
+				{/* Apellido */}
 				<Input
 					estado={lastName}
 					cambiarEstado={cambiarLastName}
@@ -166,23 +198,46 @@ const Form = () => {
 				</DivHora>
 
 				{
-					turnoNoEncontrado === true && <MensajeTurnoNoEncontrado><b>Error:</b> Turno no encontado</MensajeTurnoNoEncontrado>
+					// Mensaje de turno no encontrado
+					turnoNoEncontrado === true && 
+						<MensajeTurnoNoEncontrado>
+							<FontAwesomeIcon icon={faExclamationTriangle} style={{marginRight: "8px"}}/>
+							<b>Error:</b> Turno no encontado
+						</MensajeTurnoNoEncontrado>
 				}
 
 				{
-					formularioValido === false && <MensajeError>
-						<p>
-							<FontAwesomeIcon icon={faExclamationTriangle}/>
-							<b>Error:</b> Formulario Incorrecto.
-						</p>
-					</MensajeError>
+					// Mensaje de formulario incorrecto
+					formularioValido === false && 
+						<MensajeError>
+							<p>
+								<FontAwesomeIcon icon={faExclamationTriangle}/>
+								<b>Error:</b> Formulario Incorrecto.
+							</p>
+						</MensajeError>
+				}
+
+				{	
+					// Loading mintras se elimina el turno
+					loading === true && 
+						<Loading>
+							Eliminando Turno...
+						</Loading>
 				}
 
 				<ContenedorBotonCentrado>
 					
-					{formularioValido === true && <MensajeExito>Turno eliminado exitosamente!</MensajeExito>}
+					{
+						// Mensaje de turno eliminado
+						formularioValido === true && 
+							<MensajeExito>
+								<FontAwesomeIcon icon={faCheck} style={{marginRight: "8px"}} />
+								¡Turno eliminado exitosamente!
+							</MensajeExito>
+					}
 					
 					<Boton>Eliminar Turno</Boton>
+
 				</ContenedorBotonCentrado>
 
 			</Formulario>
