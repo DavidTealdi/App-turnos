@@ -152,10 +152,11 @@ const Form = () => {
 						} catch (error) {
 							// Si la peticion de axios salio mal mostramos el mensaje flotante
 							toast.error('Error: el servidor no responde', {
-								duration: 7000,
+								duration: 10000,
 								position: 'top-center',
 								style: {
-									background: "#212121",
+									fontSize: "18px",
+									background: "#c50000",
 									color: "#fff"
 								}
 							})			
@@ -179,10 +180,11 @@ const Form = () => {
 
 					// Si la peticion de axios salio mal mostramos el mensaje flotante
 					toast.error('Error: el servidor no responde', {
-						duration: 7000,
+						duration: 10000,
 						position: 'top-center',
 						style: {
-							background: "#212121",
+							fontSize: "18px",
+							background: "#c50000",
 							color: "#fff"
 						}
 					})	
@@ -230,8 +232,9 @@ const Form = () => {
 								duration: 10000,
 								position: 'top-center',
 								style: {
-								background: "#212121",
-								color: "#fff"
+									fontSize: "18px",
+									background: "#c50000",
+									color: "#fff"
 								}
 							})
 						}
@@ -257,8 +260,9 @@ const Form = () => {
 						duration: 10000,
 						position: 'top-center',
 						style: {
-						background: "#212121",
-						color: "#fff"
+							fontSize: "18px",
+							background: "#c50000",
+							color: "#fff"
 						}
 					})
 				}

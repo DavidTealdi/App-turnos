@@ -127,8 +127,9 @@ const Form = () => {
 					duration: 10000,
 					position: 'top-center',
 					style: {
-					  background: "#212121",
-					  color: "#fff"
+						fontSize: "18px",
+						background: "#c50000",
+						color: "#fff"
 					}
 				})
             }

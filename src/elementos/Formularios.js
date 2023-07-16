@@ -340,7 +340,8 @@ const MensajeTurnoNoEncontrado = styled.p`
 
 const Loading = styled.p`
   margin: auto;
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: 500;
 `;
 
 export {
