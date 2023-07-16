@@ -12,7 +12,7 @@ const DeleteTurnsView = () => {
 				</NavLink>
 			</div>
 
-            <h1 className={style.h2TitleFormDelete}>Eliminar turno</h1>
+            <h1 className={style.h1TitleFormDelete}>Eliminar turno</h1>
 
             <DeleteTurns/>
 
