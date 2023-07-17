@@ -11,10 +11,10 @@ import { faExclamationTriangle, faCheck } from '@fortawesome/free-solid-svg-icon
 
 
 // Varianble para guardar las opciones del select de hora viernes
-const viernesHoras = [ {value: "Seleccione una hora"}, {value: '08:40hs'}, {value: '09:00hs'}, {value: '09:30hs'}, {value: '10:00hs'}, {value: '10:20hs'}, {value: '10:40hs'}, {value: '11:00hs'}, {value: '11:30hs'}, {value: '12:00hs'}, {value: '12:20hs'}, {value: '16:00hs'}, {value: '16:20hs'}, {value: '16:40hs'}, {value: '17:00hs'}, {value: '17:30hs'}, {value: '18:30hs'}, {value: '19:20hs'}, {value: '19:40hs'},{value: '20:00hs'}]
+const viernesHoras = [ {value: "Seleccione una hora"}, {value: '08:40hs'}, {value: '09:00hs'}, {value: '09:30hs'}, {value: '10:00hs'}, {value: '10:30hs'}, {value: '11:00hs'}, {value: '11:30hs'}, {value: '12:00hs'}, {value: '12:20hs'}, {value: '16:00hs'}, {value: '16:20hs'}, {value: '16:40hs'}, {value: '17:00hs'}, {value: '17:30hs'}, {value: '18:00hs'}, {value: '18:30hs'}, {value: '19:00hs'}, {value: '19:20hs'}, {value: '19:40hs'},{value: '20:00hs'}]
 
 // Varianble para guardar las opciones del select de hora sabado
-const sabadoHoras = [ {value: "Seleccione una hora"}, {value: '08:40hs'}, {value: '09:00hs'}, {value: '09:20hs'}, {value: '09:40hs'}, {value: '10:00hs'}, {value: '10:30hs'}, {value: '11:00hs'}, {value: '11:20hs'}, {value: '11:40hs'}, {value: '12:00hs'}, {value: '17:40hs'}, {value: '18:00hs'}, {value: '18:20hs'}, {value: '18:40hs'}, {value: '19:00hs'}, {value: '19:20hs'}, {value: '19:40hs'}, {value: '20:00hs'}]
+const sabadoHoras = [ {value: "Seleccione una hora"}, {value: '08:40hs'}, {value: '09:00hs'}, {value: '09:30hs'}, {value: '10:00hs'}, {value: '10:30hs'}, {value: '11:00hs'}, {value: '11:30hs'}, {value: '12:00hs'}, {value: '12:20hs'}, {value: '16:00hs'}, {value: '16:20hs'}, {value: '16:40hs'}, {value: '17:00hs'}, {value: '17:30hs'}, {value: '18:00hs'}, {value: '18:30hs'}, {value: '19:00hs'}, {value: '19:20hs'}, {value: '19:40hs'},{value: '20:00hs'}]
 
 
 const Form = () => {
@@ -76,7 +76,7 @@ const Form = () => {
         name: name.campo,
         lastName: lastName.campo,
         number: number.campo,
-        dia: 'Viernes',
+        dia: 'Jueves', // AQUI
         hora: horaViernes 
     }
 
@@ -86,21 +86,21 @@ const Form = () => {
         name: name.campo,
         lastName: lastName.campo,
         number: number.campo,
-        dia: 'Sabado',
+        dia: 'Viernes', // AQUI
         hora: horaSabado
     }
 
 	// Objeto para guardar el turno que seleccione el usuario
 	// y enviarlo al servidor para ver si existe o no el turno
 	let turnosEV = {
-		dia: 'Viernes',
+		dia: 'Jueves', // AQUI
         hora: horaViernes 
 	}
 
 	// Objeto para guardar el turno que seleccione el usuario
 	// y enviarlo al servidor para ver si existe o no el turno
 	let turnosES = {
-		dia: 'Sabado',
+		dia: 'Viernes', // AQUI
         hora: horaSabado
 	}
 
@@ -296,7 +296,7 @@ const Form = () => {
         
                 for (let i = 0; i < array.length; i++) {
                         
-                    if  (array[i].dia === 'Viernes') {
+                    if  (array[i].dia === 'Jueves') { // AQUI
 
                         for (let v = 0; v < hora_viernes.length; v++) {
                                 
@@ -308,7 +308,7 @@ const Form = () => {
                              
                     }
                         
-                    if  (response.data[i].dia === 'Sabado') {
+                    if  (response.data[i].dia === 'Viernes') { // AQUI
                         
                         for (let s = 0; s < hora_sabado.length; s++) {
                                     
@@ -371,7 +371,7 @@ const Form = () => {
 					expresionRegular={expresiones.telefono}
 				/>
 
-				<LabelForm htmlFor='hour'> Viernes </LabelForm>
+				<LabelForm htmlFor='hour'> Jueves </LabelForm> 
 				<SelectForm id='horaViernes' value={horaViernes} onChange={viernesOnchage} >
 					{                         
 						// Se mapea el array de objetos ViernesHoras y por cada valor se muestra una opcion
@@ -379,7 +379,7 @@ const Form = () => {
 					}
 				</SelectForm>
 
-				<LabelForm htmlFor='hour'> Sabado </LabelForm>
+				<LabelForm htmlFor='hour'> Viernes </LabelForm>
 				<SelectForm id='horaSabado' value={horaSabado} onChange={sabadoOnchage} >
 					{
 						// Se mapea el array de objetos sabadoHoras y por cada valor se muestra una opcion
@@ -394,10 +394,10 @@ const Form = () => {
 						
 							horaViernes 
 						
-								? <DiaHora><SpanTurno>Turno: </SpanTurno> Viernes {horaViernes}</DiaHora>
+								? <DiaHora><SpanTurno>Turno: </SpanTurno> Jueves {horaViernes}</DiaHora>
 						
 							: horaSabado 
-								? <DiaHora><SpanTurno>Turno: </SpanTurno> Sabado {horaSabado}</DiaHora> 
+								? <DiaHora><SpanTurno>Turno: </SpanTurno> Viernes {horaSabado}</DiaHora> 
 						
 							: null
 					}

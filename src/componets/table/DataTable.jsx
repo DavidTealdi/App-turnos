@@ -81,7 +81,7 @@ const DataTable = () => {
             
             <div className={style.divTable}>
 
-                <h3>Viernes</h3>
+                <h3>Jueves</h3>
 
                 <table className='table table-striped .table-responsive'>
                     <thead>
@@ -110,7 +110,7 @@ const DataTable = () => {
                     </tbody>
                 </table>
 
-                <h3>Sabado</h3>
+                <h3>Viernes</h3>
 
                 <table className='table table-striped .table-responsive'>
                     <thead>
