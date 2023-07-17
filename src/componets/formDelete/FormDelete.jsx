@@ -75,7 +75,7 @@ const Form = () => {
 		e.preventDefault();
 
 		// Verificamos si no hay errores en los input para poder enviarlos al servidor
-		if(name.valido === 'true' && lastName.valido === 'true') {
+		if(name.valido === 'true' && lastName.valido === 'true' && dia !== "" && hora !== "") {
 
 			// Poner el loading en true para mostrarlo
 			setLoading(true)
@@ -123,15 +123,17 @@ const Form = () => {
 				} 
 
 				// Si el servidor no respode mostramos el mensaje flotante
-				else toast.error('Error: el servidor no responde', {
-					duration: 10000,
-					position: 'top-center',
-					style: {
-						fontSize: "18px",
-						background: "#c50000",
-						color: "#fff"
-					}
-				})
+				if (error.message === "Network Error") {
+					toast.error('Error: el servidor no responde', {
+						duration: 10000,
+						position: 'top-center',
+						style: {
+							fontSize: "18px",
+							background: "#c50000",
+							color: "#fff"
+						}
+					})
+				}
             }
 			
 			

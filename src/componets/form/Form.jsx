@@ -109,7 +109,7 @@ const Form = () => {
 		e.preventDefault();
 
 		// Verificamos si no hay errores en los input para poder enviarlos al servidor
-		if(name.valido === 'true' && lastName.valido === 'true') {
+		if(name.valido === 'true' && lastName.valido === 'true' && horaViernes !== "" || horaSabado !== "") {
 
 			// Cuando se presiona al boton de guardar, lanzamos el loading
 			setLoading(true)
@@ -189,7 +189,7 @@ const Form = () => {
 						}
 					})	
 				}	 	
-			}
+			} 
 
 		
 			// Si el estado horaSabado no esta vacio, enviamos un turno dia sabado
