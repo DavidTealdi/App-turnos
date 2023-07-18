@@ -11,7 +11,7 @@ import Input from '../input/Input';
 
 
 // Varianble para guardar las opciones del select de hora viernes
-const Dia = [ {value: "Seleccione un dia"}, {value: 'Jueves'}, {value: 'Viernes'}, ] // AQUI
+const Dia = [ {value: "Seleccione un dia"}, {value: 'Viernes'}, {value: 'Sabado'}, ] // AQUI
 
 // Varianble para guardar las opciones del select de hora viernes
 const Horas = [ {value: "Seleccione una hora"}, {value: '08:40hs'}, {value: '09:00hs'}, {value: '09:30hs'}, {value: '10:00hs'}, {value: '10:30hs'}, {value: '11:00hs'}, {value: '11:30hs'}, {value: '12:00hs'}, {value: '12:20hs'}, {value: '16:00hs'}, {value: '16:20hs'}, {value: '16:40hs'}, {value: '17:00hs'}, {value: '17:30hs'}, {value: '18:00hs'}, {value: '18:30hs'}, {value: '19:00hs'}, {value: '19:20hs'}, {value: '19:40hs'},{value: '20:00hs'}]
