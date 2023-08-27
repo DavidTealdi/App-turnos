@@ -10,20 +10,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationTriangle, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 
-// Varianble para guardar las opciones del select de hora viernes
-const viernesHoras = [ {value: "Seleccione una hora"}, {value: '14:00hs'}, {value: '14:20hs'}, {value: '14:40hs'}, {value: '15:00hs'},
-{value: '15:30hs'}, {value: '16:00hs'}, {value: '16:20hs'}, {value: '16:40hs'}, {value: '17:00hs'}, {value: '17:30hs'}, {value: '18:30hs'}, {value: '19:00hs'}, {value: '19:20hs'}, {value: '19:40hs'}, {value: '20:00hs'}]
-
-// Varianble para guardar las opciones del select de hora sabado
-const sabadoHoras = [ {value: "Seleccione una hora"}, {value: '09:30hs'}, {value: '10:00hs'}, {value: '10:20hs'}, {value: '10:40hs'},   {value: '15:40hs'}, {value: '16:00hs'},  {value: '16:20hs'}, {value: '16:40hs'}, {value: '17:00hs'}, {value: '17:30hs'}, {value: '18:30hs'}, {value: '19:00hs'}, {value: '19:20hs'}, {value: '19:40hs'}, {value: '20:00hs'}]
-
-
 const Form = () => {
 
 	// Estado para almacenar el nombre, apellido y numero
     const [name, cambiarName] = useState({campo: '', valido: null}); 
 	const [lastName, cambiarLastName] = useState({campo: '', valido: null});
 	const [number, cambiarNumber] = useState({campo: '', valido: null});
+
+	const [viernesHoras, setViernesHoras] = useState([])
+	const [sabadoHoras, setSabadoHoras] = useState([])
 	
 	// Estado para manejar el mensaje de existo
 	const [formularioValido, cambiarFormularioValido] = useState(null);
@@ -278,6 +273,22 @@ const Form = () => {
 		}
 	}
 
+	const getHoras = async () => {
+		try {
+			axios.all([
+			  axios.get('/horas/viernes'),
+			  axios.get('/horas/sabado')
+			]).then(
+			  axios.spread((viernes, sabado) => {
+				setViernesHoras(viernes.data)
+				setSabadoHoras(sabado.data)
+			  })
+			);
+		} catch (error) {
+		console.log(error)
+		}
+	}
+
 	// Funcion para traer todos los turnos que hay en la DB y sacarlos del select 
 	const horasFn = async () => {
 
@@ -329,7 +340,8 @@ const Form = () => {
 
 	// Cuando se monte el compenente llama a la funcion horasFn()
 	useEffect(() => {
-        horasFn()
+		getHoras()
+        // horasFn()
     }, [])
 
     return (
@@ -373,18 +385,20 @@ const Form = () => {
 				/>
 
 				<LabelForm htmlFor='hour'> Viernes </LabelForm> 
-				<SelectForm id='horaViernes' value={horaViernes} onChange={viernesOnchage} >
+				<SelectForm id='horaViernes' value={horaViernes} onChange={viernesOnchage} onClick={() => horasFn()} >
+					<option defaultChecked>Selecione una hora</option>
 					{                         
 						// Se mapea el array de objetos ViernesHoras y por cada valor se muestra una opcion
-						viernesHoras.map(hour => <option key={hour.value} value={hour.value}> {hour.value} </option>)
+						viernesHoras.map(hour => <option key={hour._id} value={hour.hora}> {hour.hora} </option>)
 					}
 				</SelectForm>
 
 				<LabelForm htmlFor='hour'> Sabado </LabelForm>
-				<SelectForm id='horaSabado' value={horaSabado} onChange={sabadoOnchage} >
+				<SelectForm id='horaSabado' value={horaSabado} onChange={sabadoOnchage} onClick={() => horasFn()} >
+					<option defaultChecked>Selecione una hora</option>
 					{
 						// Se mapea el array de objetos sabadoHoras y por cada valor se muestra una opcion
-						sabadoHoras.map(hour => <option key={hour.value} value={hour.value}> {hour.value} </option>)
+						sabadoHoras.map(hour => <option key={hour._id} value={hour.hora}> {hour.hora} </option>)
 					}
 				</SelectForm>
 

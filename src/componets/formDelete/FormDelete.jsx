@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -11,10 +11,7 @@ import Input from '../input/Input';
 
 
 // Varianble para guardar las opciones del select de hora viernes
-const Dia = [ {value: "Seleccione un dia"}, {value: 'Viernes'}, {value: 'Sabado'}, ] // AQUI
-
-// Varianble para guardar las opciones del select de hora viernes
-const Horas = [ {value: "Seleccione una hora"}, {value: '08:40hs'}, {value: '09:00hs'}, {value: '09:30hs'}, {value: '10:00hs'}, {value: '10:20hs'},  {value: '10:40hs'},  {value: '11:00hs'}, {value: '11:30hs'}, {value: '12:00hs'}, {value: '12:20hs'},  {value: '14:00hs'}, {value: '14:20hs'}, {value: '14:40hs'}, {value: '15:00hs'}, {value: '15:30hs'}, {value: '16:00hs'}, {value: '16:20hs'}, {value: '16:30hs'}, {value: '16:40hs'}, {value: '17:00hs'}, {value: '17:20hs'}, {value: '17:30hs'}, {value: '17:40hs'}, {value: '18:00hs'}, {value: '18:30hs'}, {value: '18:40hs'}, {value: '19:00hs'}, {value: '19:20hs'}, {value: '19:30hs'}, {value: '19:40hs'},{value: '20:00hs'}]
+const Dia = [ {value: "Seleccione un dia"}, {value: 'Viernes'}, {value: 'Sabado'}]
 
 
 const Form = () => {
@@ -40,6 +37,8 @@ const Form = () => {
 
 	// Estado para manejar el mensaje de loading
 	const [loading, setLoading] = useState(false)
+
+	const [horas, setHoras] = useState([])
 
     const expresiones = {
 		nombre: /^[a-zA-ZÀ-ÿ\s]{3,40}$/, // Letras y espacios, pueden llevar acentos.
@@ -146,6 +145,26 @@ const Form = () => {
 		}
 	}
 
+	const getHoras = async () => {
+		try {
+			axios.all([
+			  axios.get('/horas/viernes'),
+			  axios.get('/horas/sabado')
+			]).then(
+			  axios.spread((viernes, sabado) => {
+				const horasCombinadas = [...viernes.data, ...sabado.data];
+				setHoras(horasCombinadas)
+			  })
+			);
+		} catch (error) {
+		console.log(error)
+		}
+	}
+
+	useEffect(() => {
+		getHoras()
+	}, [])
+
     return (
         <section>
 			
@@ -187,9 +206,10 @@ const Form = () => {
 
 				<LabelForm htmlFor='hora'> Hora </LabelForm>
 				<SelectForm id='hora' value={hora} onChange={horaOnchage} >
+					<option>Seleccione una hora</option>
 					{
 						// Se mapea el array de objetos sabadoHoras y por cada valor se muestra una opcion
-						Horas.map(hour => <option key={hour.value} value={hour.value}> {hour.value} </option>)
+						horas?.map(hour => <option key={hour._id} value={hour.hora}> {hour.hora} </option>)
 					}
 				</SelectForm>
 
