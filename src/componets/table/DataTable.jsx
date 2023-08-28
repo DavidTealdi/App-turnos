@@ -46,7 +46,7 @@ const DataTable = () => {
             hora: horaViernes
         }
         
-        if(horaViernes != '') {
+        if(horaViernes !== '') {
             
             setLoadingV(true)
             
@@ -93,7 +93,7 @@ const DataTable = () => {
             hora: horaSabdo
         }
         
-        if (horaSabdo != '') {
+        if (horaSabdo !== '') {
             
             setLoadingS(true)
         
