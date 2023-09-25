@@ -152,7 +152,7 @@ const Form = () => {
 			  axios.get('/horas/sabado')
 			]).then(
 			  axios.spread((viernes, sabado) => {
-				const horasCombinadas = [{hora: 'VIERNES'}, ...viernes.data, {hora: 'SABADO'}, ...sabado.data];
+				const horasCombinadas = [{hora: 'JUEVES'}, ...viernes.data, {hora: 'VIERNES'}, ...sabado.data];
 				console.log(horasCombinadas)
 				setHoras(horasCombinadas)
 			  })

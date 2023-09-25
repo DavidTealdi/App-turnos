@@ -72,7 +72,7 @@ const Form = () => {
         name: name.campo,
         lastName: lastName.campo,
         number: number.campo,
-        dia: 'Viernes',
+        dia: 'Jueves', // Aqui
         hora: horaViernes 
     }
 
@@ -82,21 +82,21 @@ const Form = () => {
         name: name.campo,
         lastName: lastName.campo,
         number: number.campo,
-        dia: 'Sabado',
+        dia: 'Viernes', // Aqui
         hora: horaSabado
     }
 
 	// Objeto para guardar el turno que seleccione el usuario
 	// y enviarlo al servidor para ver si existe o no el turno
 	let turnosEV = {
-		dia: 'Viernes',
+		dia: 'Jueves', // Aqui
         hora: horaViernes 
 	}
 
 	// Objeto para guardar el turno que seleccione el usuario
 	// y enviarlo al servidor para ver si existe o no el turno
 	let turnosES = {
-		dia: 'Sabado',
+		dia: 'Viernes', // Aqui
         hora: horaSabado
 	}
 
@@ -308,7 +308,7 @@ const Form = () => {
         
                 for (let i = 0; i < array.length; i++) {
                         
-                    if  (array[i].dia === 'Viernes') { // AQUI
+                    if  (array[i].dia === 'Jueves') { // AQUI
 
                         for (let v = 0; v < hora_viernes.length; v++) {
                                 
@@ -320,7 +320,7 @@ const Form = () => {
                              
                     }
                         
-                    if  (response.data[i].dia === 'Sabado') { // AQUI
+                    if  (response.data[i].dia === 'Viernes') { // AQUI
                         
                         for (let s = 0; s < hora_sabado.length; s++) {
                                     
@@ -386,7 +386,7 @@ const Form = () => {
 					expresionRegular={expresiones.telefono}
 				/>
 
-				<LabelForm htmlFor='hour'> Viernes </LabelForm> 
+				<LabelForm htmlFor='hour'> Jueves </LabelForm> 
 				<SelectForm id='horaViernes' value={horaViernes} onChange={viernesOnchage} onClick={() => horasFn()} >
 					<option defaultChecked>Selecione una hora</option>
 					{                         
@@ -395,7 +395,7 @@ const Form = () => {
 					}
 				</SelectForm>
 
-				<LabelForm htmlFor='hour'> Sabado </LabelForm>
+				<LabelForm htmlFor='hour'> Viernes </LabelForm>
 				<SelectForm id='horaSabado' value={horaSabado} onChange={sabadoOnchage} onClick={() => horasFn()} >
 					<option defaultChecked>Selecione una hora</option>
 					{
