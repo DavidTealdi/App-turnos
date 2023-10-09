@@ -288,7 +288,7 @@ const DataTable = () => {
 
             <div className={style.divInputViernes}>
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Horas Jueves (ejemplo 09:00hs)" aria-label="Recipient's username" aria-describedby="basic-addon2" onChange={viernesOnchage} value={horaViernes}/>
+                    <input type="text" class="form-control" placeholder="Horas viernes (ejemplo 09:00hs)" aria-label="Recipient's username" aria-describedby="basic-addon2" onChange={viernesOnchage} value={horaViernes}/>
                     <button class="btn btn-dark" onClick={() => guardarViernes()}>Guardar</button>
                 </div>
             </div>
@@ -305,7 +305,7 @@ const DataTable = () => {
 
             <div className={style.divInputViernes}>
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Horas Viernes (ejemplo 09:00hs)" aria-label="Recipient's username" aria-describedby="basic-addon2" onChange={sabadoOnchage} value={horaSabdo}/>
+                    <input type="text" class="form-control" placeholder="Horas sabado (ejemplo 09:00hs)" aria-label="Recipient's username" aria-describedby="basic-addon2" onChange={sabadoOnchage} value={horaSabdo}/>
                     <div class="input-group-append">
                         <button class="btn btn-dark" onClick={() => guardarSabado()}>Guardar</button>
                     </div>
@@ -327,7 +327,7 @@ const DataTable = () => {
             </div>
 
             <div className={style.divTitle}>
-                <h5>Hora Jueves</h5>
+                <h5>Hora viernes</h5>
             </div>
             <table className={style.table}>
                 <thead>
@@ -348,7 +348,7 @@ const DataTable = () => {
             </table>
             
             <div className={style.divTitle}>
-                <h5>Hora Viernes</h5>
+                <h5>Hora sabado</h5>
             </div>
             <table className={style.table}>
                 <thead>
@@ -377,7 +377,7 @@ const DataTable = () => {
             <div className={style.divTable}>
 
                 <div className={style.divTitle}>
-                    <h4>Jueves</h4>
+                    <h4>Viernes</h4>
                 </div>
 
                 <table className={style.table}>
@@ -408,7 +408,7 @@ const DataTable = () => {
                 </table>
                 
                 <div className={style.divTitle}>
-                    <h4>Viernes</h4>
+                    <h4>Sabado</h4>
                 </div>
 
                 <table className={style.table}>
