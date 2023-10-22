@@ -2,10 +2,10 @@ import './App.css';
 
 import { Route, Routes } from 'react-router-dom';
 
-import Home from './view/home/Home'
-import DeleteTurns from './view/deleteTurns/DeleteTurns'
-import Login from './view/login/Login'
-import TableTurns from './view/tableTurns/TableTurns'
+import Home from './page/home/Home'
+import DeleteTurns from './page/deleteTurns/DeleteTurns'
+import Login from './page/login/Login'
+import TableTurns from './page/tableTurns/TableTurns'
 
 function App() { 
 

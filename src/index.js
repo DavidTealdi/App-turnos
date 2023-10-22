@@ -6,7 +6,6 @@ import axios from 'axios';
 
 
 axios.defaults.baseURL = process.env.REACT_APP_URL_LOCAL || process.env.REACT_APP_URL_REMOTA
-// axios.defaults.baseURL = process.env.REACT_APP_URL_REMOTA
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

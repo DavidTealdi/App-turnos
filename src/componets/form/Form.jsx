@@ -17,6 +17,8 @@ const Form = () => {
 	const [lastName, cambiarLastName] = useState({campo: '', valido: null});
 	const [number, cambiarNumber] = useState({campo: '', valido: null});
 
+	const [array, setArray] = useState([])
+
 	const [viernesHoras, setViernesHoras] = useState([])
 	const [sabadoHoras, setSabadoHoras] = useState([])
 	
@@ -41,31 +43,6 @@ const Form = () => {
 		telefono: /^\d{7,14}$/ // 7 a 14 numeros.
 	}
 
-
-	// Funcion para guardar la hora del viernes seleccionada
-    const viernesOnchage = (event) => {
-        setViernes(event.target.value)
-
-		// Limpiamos el estado del sabado
-        setSabado('')
-
-		// ponemos el estado del mensaje de turno seleccionado en true
-        setTurnos(true)
-    }
-
-    // Funcion para guardar la hora del sabado seleccionada
-    const sabadoOnchage = (event) => {
-
-        setSabado(event.target.value)
-
-		// Limpiamos el estado del viernes
-        setViernes('')
-
-		// ponemos el estado del mensaje de turno seleccionado en true
-        setTurnos(true)
-    }
-
-	
 	// Objeto para guardar todos los estado 
     // y enviarlos al servidor si el turno es viernes
 	let fromViernes = {
@@ -99,6 +76,30 @@ const Form = () => {
 		dia: 'Sabado', // Aqui
         hora: horaSabado
 	}
+
+
+	// Funcion para guardar la hora del viernes seleccionada
+    const viernesOnchage = (event) => {
+        setViernes(event.target.value)
+
+		// Limpiamos el estado del sabado
+        setSabado('')
+
+		// ponemos el estado del mensaje de turno seleccionado en true
+        setTurnos(true)
+    }
+
+    // Funcion para guardar la hora del sabado seleccionada
+    const sabadoOnchage = (event) => {
+
+        setSabado(event.target.value)
+
+		// Limpiamos el estado del viernes
+        setViernes('')
+
+		// ponemos el estado del mensaje de turno seleccionado en true
+        setTurnos(true)
+    }
 
 	// Funcion para para mandar todo al servidor cuando se haga click en guardar
     const onSubmit = async (e) => {
@@ -294,44 +295,41 @@ const Form = () => {
 
         try {
         
-            await axios.get('/getturnos')
-            .then(response => {
-                return response
-            })
-            .then(response => {
+            const response =  await axios.get('/getturnos')
 
-                let array =  response.data
+			let array =  response.data
 
-                let hora_viernes = document.getElementById("horaViernes");
-                let hora_sabado = document.getElementById("horaSabado");
-                
-        
-                for (let i = 0; i < array.length; i++) {
-                        
-                    if  (array[i].dia === 'Viernes') { // AQUI
+			let hora_viernes = document.getElementById("horaViernes");
+			let hora_sabado = document.getElementById("horaSabado");
+			
+	
+			for (let i = 0; i < array.length; i++) {
+					
+				if  (array[i].dia === 'Viernes') { // AQUI
 
-                        for (let v = 0; v < hora_viernes.length; v++) {
-                                
-                            if (hora_viernes.options[v].value === array[i].hora) {
-                                
-                                hora_viernes.remove(v);
-                            }
-                        }
-                             
-                    }
-                        
-                    if  (response.data[i].dia === 'Sabado') { // AQUI
-                        
-                        for (let s = 0; s < hora_sabado.length; s++) {
-                                    
-                            if  (hora_sabado.options[s].value === array[i].hora) {
+					for (let v = 0; v < hora_viernes.length; v++) {
+							
+						if (hora_viernes.options[v].value === array[i].hora) {
+							
+							// hora_viernes.remove(v);
+							hora_viernes.options[v].disabled = true
+						}
+					}
+							
+				}
+					
+				if  (response.data[i].dia === 'Sabado') { // AQUI
+					
+					for (let s = 0; s < hora_sabado.length; s++) {
+								
+						if  (hora_sabado.options[s].value === array[i].hora) {
 
-                                hora_sabado.remove(s);
-                            }
-                        }
-                    }
-                }
-            })
+							// hora_sabado.remove(s);
+							hora_sabado.options[s].disabled = true
+						}
+					}
+				}
+			}
         }
         catch (error) {
 			console.log(error.message)
@@ -340,9 +338,11 @@ const Form = () => {
 
 	// Cuando se monte el compenente llama a la funcion horasFn()
 	useEffect(() => {
+		
 		getHoras()
+		
+		horasFn()
 		// setTimeout(() => {
-		//	horasFn()
 		// }, 1000)
     }, [])
 
@@ -375,7 +375,7 @@ const Form = () => {
 					expresionRegular={expresiones.nombre}
 				/>
 				{/* NUMERO */}
-				<Input
+				{/* <Input
 					estado={number}
 					cambiarEstado={cambiarNumber}
 					tipo="text"
@@ -384,7 +384,7 @@ const Form = () => {
 					name="telefono"
 					leyendaError="El telefono solo puede contener numeros y el maximo son 10 dígitos sin 0 ni 15."
 					expresionRegular={expresiones.telefono}
-				/>
+				/> */}
 
 				<LabelForm htmlFor='hour'> Viernes </LabelForm> 
 				<SelectForm id='horaViernes' value={horaViernes} onChange={viernesOnchage} onClick={() => horasFn()} >
