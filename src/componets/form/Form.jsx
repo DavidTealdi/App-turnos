@@ -274,7 +274,6 @@ const Form = () => {
 
 
 	useEffect(() => {
-
 	
 		const viernes = async () => {
 
@@ -314,48 +313,47 @@ const Form = () => {
 		}
 
 		viernes()
+
 	}, [])
 
 	useEffect(() => {
 
-	
+		const sabado = async () => {
 
-	const sabado = async () => {
-
-		try {
-			
-			const res = await axios.get('/horas/sabado')
-
-			setSabadoHoras(res.data)
-
-			const response = await axios.get('/getturnos')
-
-			let array =  response.data
-
-			let hora_sabado = document.getElementById("horaSabado");
-			
-	
-			for (let i = 0; i < array.length; i++) {
+			try {
 				
-				if  (response.data[i].dia === 'Sabado') { // AQUI
-					
-					for (let s = 0; s < hora_sabado.length; s++) {
-								
-						if  (hora_sabado.options[s].value === array[i].hora) {
+				const res = await axios.get('/horas/sabado')
 
-							hora_sabado.remove(s);
-							// hora_sabado.options[s].disabled = true
+				setSabadoHoras(res.data)
+
+				const response = await axios.get('/getturnos')
+
+				let array =  response.data
+
+				let hora_sabado = document.getElementById("horaSabado");
+				
+		
+				for (let i = 0; i < array.length; i++) {
+					
+					if  (response.data[i].dia === 'Sabado') { // AQUI
+						
+						for (let s = 0; s < hora_sabado.length; s++) {
+									
+							if  (hora_sabado.options[s].value === array[i].hora) {
+
+								hora_sabado.remove(s);
+								// hora_sabado.options[s].disabled = true
+							}
 						}
 					}
 				}
+
+			} catch (error) {
+				console.log(error)
 			}
-
-		} catch (error) {
-			console.log(error)
 		}
-	}
 
-	sabado()
+		sabado()
 
 	}, [])
 	
@@ -389,7 +387,7 @@ const Form = () => {
 					expresionRegular={expresiones.nombre}
 				/>
 				{/* NUMERO */}
-				{/* <Input
+				<Input
 					estado={number}
 					cambiarEstado={cambiarNumber}
 					tipo="text"
@@ -398,7 +396,7 @@ const Form = () => {
 					name="telefono"
 					leyendaError="El telefono solo puede contener numeros y el maximo son 10 dígitos sin 0 ni 15."
 					expresionRegular={expresiones.telefono}
-				/> */}
+				/>
 
 				<LabelForm htmlFor='hour'> Viernes </LabelForm> 
 				<SelectForm id='horaViernes' value={horaViernes} onChange={viernesOnchage} >
