@@ -17,8 +17,6 @@ const Form = () => {
 	const [lastName, cambiarLastName] = useState({campo: '', valido: null});
 	const [number, cambiarNumber] = useState({campo: '', valido: null});
 
-	const [array, setArray] = useState([])
-
 	const [viernesHoras, setViernesHoras] = useState([])
 	const [sabadoHoras, setSabadoHoras] = useState([])
 	
@@ -37,6 +35,9 @@ const Form = () => {
 
 	// Estado para manejar el mensaje de loading
 	const [loading, setLoading] = useState(false)
+
+	const [loadingV, setLoadingV] = useState(false)
+	const [loadingS, setLoadingS] = useState(false)
 
     const expresiones = {
 		nombre: /^[a-zA-ZÀ-ÿ\s]{3,40}$/, // Letras y espacios, pueden llevar acentos.
@@ -274,35 +275,82 @@ const Form = () => {
 		}
 	}
 
-	const getHoras = async () => {
-		try {
-			axios.all([
-			  axios.get('/horas/viernes'),
-			  axios.get('/horas/sabado')
-			]).then(
-			  axios.spread((viernes, sabado) => {
-				setViernesHoras(viernes.data)
-				setSabadoHoras(sabado.data)
-			  })
-			);
-		} catch (error) {
-		console.log(error)
-		}
-	}
+	// const getHoras = async () => {
 
-	// Funcion para traer todos los turnos que hay en la DB y sacarlos del select 
-	const horasFn = async () => {
+	// 	try {
+	// 		axios.all([
+	// 		  axios.get('/horas/viernes'),
+	// 		  axios.get('/horas/sabado'),
+	// 		]).then(
+	// 		  axios.spread((viernes, sabado) => {
+	// 			setViernesHoras(viernes.data)
+	// 			setSabadoHoras(sabado.data)
+	// 		  })
+	// 		);
+	// 	} catch (error) {
+	// 	console.log(error)
+	// 	}
+	// }
 
-		await getHoras()
+	// // Funcion para traer todos los turnos que hay en la DB y sacarlos del select 
+	// const horasFn = async () => {
 
-        try {
+    //     try {
         
-            const response =  await axios.get('/getturnos')
+    //         const response =  await axios.get('/getturnos')
+
+	// 		let array =  response.data
+
+	// 		let hora_viernes = document.getElementById("horaViernes");
+	// 		let hora_sabado = document.getElementById("horaSabado");
+			
+	
+	// 		for (let i = 0; i < array.length; i++) {
+					
+	// 			if  (array[i].dia === 'Viernes') { // AQUI
+
+	// 				for (let v = 0; v < hora_viernes.length; v++) {
+							
+	// 					if (hora_viernes.options[v].value === array[i].hora) {
+							
+	// 						hora_viernes.remove(v);
+	// 						// hora_viernes.options[v].disabled = true
+	// 					}
+	// 				}
+							
+	// 			}
+					
+	// 			if  (response.data[i].dia === 'Sabado') { // AQUI
+					
+	// 				for (let s = 0; s < hora_sabado.length; s++) {
+								
+	// 					if  (hora_sabado.options[s].value === array[i].hora) {
+
+	// 						hora_sabado.remove(s);
+	// 						// hora_sabado.options[s].disabled = true
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+    //     }
+    //     catch (error) {
+	// 		console.log(error.message)
+    //     }
+    // }
+
+	const viernes = async () => {
+
+		try {
+			
+			const res = await axios.get('/horas/viernes')
+
+			setViernesHoras(res.data)
+
+			const response = await axios.get('/getturnos')
 
 			let array =  response.data
 
 			let hora_viernes = document.getElementById("horaViernes");
-			let hora_sabado = document.getElementById("horaSabado");
 			
 	
 			for (let i = 0; i < array.length; i++) {
@@ -319,7 +367,30 @@ const Form = () => {
 					}
 							
 				}
-					
+			}
+
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
+	const sabado = async () => {
+
+		try {
+			
+			const res = await axios.get('/horas/sabado')
+
+			setSabadoHoras(res.data)
+
+			const response = await axios.get('/getturnos')
+
+			let array =  response.data
+
+			let hora_sabado = document.getElementById("horaSabado");
+			
+	
+			for (let i = 0; i < array.length; i++) {
+				
 				if  (response.data[i].dia === 'Sabado') { // AQUI
 					
 					for (let s = 0; s < hora_sabado.length; s++) {
@@ -332,20 +403,21 @@ const Form = () => {
 					}
 				}
 			}
-        }
-        catch (error) {
-			console.log(error.message)
-        }
-    }
 
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
+	
 	// Cuando se monte el compenente llama a la funcion horasFn()
-	useEffect(() => {
+	// useEffect(() => {
 		
-		
-		horasFn()
-		// setTimeout(() => {
-		// }, 1000)
-    }, [])
+	// 	getHoras()
+	// 	horasFn()
+	// 	// setTimeout(() => {
+	// 	// }, 1000)
+    // }, [])
 
     return (
         <section>
@@ -388,23 +460,27 @@ const Form = () => {
 				/> */}
 
 				<LabelForm htmlFor='hour'> Viernes </LabelForm> 
-				<SelectForm id='horaViernes' value={horaViernes} onChange={viernesOnchage} >
+				<SelectForm id='horaViernes' value={horaViernes} onChange={viernesOnchage} onClick={() => viernes()} >
 					<option defaultChecked>Selecione una hora</option>
 					{                         
 						// Se mapea el array de objetos ViernesHoras y por cada valor se muestra una opcion
 						viernesHoras.map(hour => <option key={hour._id} value={hour.hora}> {hour.hora} </option>)
 					}
 				</SelectForm>
+ 
+				{loadingV == true ? <p>Cargando</p> : null}
+
 				{/* onClick={() => horasFn() */}
 
 				<LabelForm htmlFor='hour'> Sabado </LabelForm>
-				<SelectForm id='horaSabado' value={horaSabado} onChange={sabadoOnchage} >
+				<SelectForm id='horaSabado' value={horaSabado} onChange={sabadoOnchage} onClick={() => sabado()}>
 					<option defaultChecked>Selecione una hora</option>
 					{
 						// Se mapea el array de objetos sabadoHoras y por cada valor se muestra una opcion
 						sabadoHoras.map(hour => <option key={hour._id} value={hour.hora}> {hour.hora} </option>)
 					}
 				</SelectForm>
+
 
 				<DivHora>
 					{
