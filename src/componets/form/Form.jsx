@@ -36,9 +36,6 @@ const Form = () => {
 	// Estado para manejar el mensaje de loading
 	const [loading, setLoading] = useState(false)
 
-	const [loadingV, setLoadingV] = useState(false)
-	const [loadingS, setLoadingS] = useState(false)
-
     const expresiones = {
 		nombre: /^[a-zA-ZÀ-ÿ\s]{3,40}$/, // Letras y espacios, pueden llevar acentos.
 		telefono: /^\d{7,14}$/ // 7 a 14 numeros.
@@ -275,68 +272,6 @@ const Form = () => {
 		}
 	}
 
-	// const getHoras = async () => {
-
-	// 	try {
-	// 		axios.all([
-	// 		  axios.get('/horas/viernes'),
-	// 		  axios.get('/horas/sabado'),
-	// 		]).then(
-	// 		  axios.spread((viernes, sabado) => {
-	// 			setViernesHoras(viernes.data)
-	// 			setSabadoHoras(sabado.data)
-	// 		  })
-	// 		);
-	// 	} catch (error) {
-	// 	console.log(error)
-	// 	}
-	// }
-
-	// // Funcion para traer todos los turnos que hay en la DB y sacarlos del select 
-	// const horasFn = async () => {
-
-    //     try {
-        
-    //         const response =  await axios.get('/getturnos')
-
-	// 		let array =  response.data
-
-	// 		let hora_viernes = document.getElementById("horaViernes");
-	// 		let hora_sabado = document.getElementById("horaSabado");
-			
-	
-	// 		for (let i = 0; i < array.length; i++) {
-					
-	// 			if  (array[i].dia === 'Viernes') { // AQUI
-
-	// 				for (let v = 0; v < hora_viernes.length; v++) {
-							
-	// 					if (hora_viernes.options[v].value === array[i].hora) {
-							
-	// 						hora_viernes.remove(v);
-	// 						// hora_viernes.options[v].disabled = true
-	// 					}
-	// 				}
-							
-	// 			}
-					
-	// 			if  (response.data[i].dia === 'Sabado') { // AQUI
-					
-	// 				for (let s = 0; s < hora_sabado.length; s++) {
-								
-	// 					if  (hora_sabado.options[s].value === array[i].hora) {
-
-	// 						hora_sabado.remove(s);
-	// 						// hora_sabado.options[s].disabled = true
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-    //     }
-    //     catch (error) {
-	// 		console.log(error.message)
-    //     }
-    // }
 
 	useEffect(() => {
 
@@ -345,8 +280,6 @@ const Form = () => {
 
 			
 			try {
-				
-				setLoadingV(true)
 				
 				const res = await axios.get('/horas/viernes')
 
@@ -425,16 +358,7 @@ const Form = () => {
 	sabado()
 
 	}, [])
-
 	
-	// Cuando se monte el compenente llama a la funcion horasFn()
-	// useEffect(() => {
-		
-	// 	getHoras()
-	// 	horasFn()
-	// 	// setTimeout(() => {
-	// 	// }, 1000)
-    // }, [])
 
     return (
         <section>
@@ -485,10 +409,6 @@ const Form = () => {
 					}
 				</SelectForm>
  
-				{/* {loadingV == true ? <p>Cargando</p> : null} */}
-
-				{/* onClick={() => horasFn() */}
-
 				<LabelForm htmlFor='hour'> Sabado </LabelForm>
 				<SelectForm id='horaSabado' value={horaSabado} onChange={sabadoOnchage} >
 					<option defaultChecked>Selecione una hora</option>
