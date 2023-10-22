@@ -293,6 +293,8 @@ const Form = () => {
 	// Funcion para traer todos los turnos que hay en la DB y sacarlos del select 
 	const horasFn = async () => {
 
+		await getHoras()
+
         try {
         
             const response =  await axios.get('/getturnos')
@@ -311,8 +313,8 @@ const Form = () => {
 							
 						if (hora_viernes.options[v].value === array[i].hora) {
 							
-							// hora_viernes.remove(v);
-							hora_viernes.options[v].disabled = true
+							hora_viernes.remove(v);
+							// hora_viernes.options[v].disabled = true
 						}
 					}
 							
@@ -324,8 +326,8 @@ const Form = () => {
 								
 						if  (hora_sabado.options[s].value === array[i].hora) {
 
-							// hora_sabado.remove(s);
-							hora_sabado.options[s].disabled = true
+							hora_sabado.remove(s);
+							// hora_sabado.options[s].disabled = true
 						}
 					}
 				}
@@ -339,7 +341,6 @@ const Form = () => {
 	// Cuando se monte el compenente llama a la funcion horasFn()
 	useEffect(() => {
 		
-		getHoras()
 		
 		horasFn()
 		// setTimeout(() => {
