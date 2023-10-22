@@ -388,16 +388,17 @@ const Form = () => {
 				/> */}
 
 				<LabelForm htmlFor='hour'> Viernes </LabelForm> 
-				<SelectForm id='horaViernes' value={horaViernes} onChange={viernesOnchage} onClick={() => horasFn()} >
+				<SelectForm id='horaViernes' value={horaViernes} onChange={viernesOnchage} >
 					<option defaultChecked>Selecione una hora</option>
 					{                         
 						// Se mapea el array de objetos ViernesHoras y por cada valor se muestra una opcion
 						viernesHoras.map(hour => <option key={hour._id} value={hour.hora}> {hour.hora} </option>)
 					}
 				</SelectForm>
+				{/* onClick={() => horasFn() */}
 
 				<LabelForm htmlFor='hour'> Sabado </LabelForm>
-				<SelectForm id='horaSabado' value={horaSabado} onChange={sabadoOnchage} onClick={() => horasFn()} >
+				<SelectForm id='horaSabado' value={horaSabado} onChange={sabadoOnchage} >
 					<option defaultChecked>Selecione una hora</option>
 					{
 						// Se mapea el array de objetos sabadoHoras y por cada valor se muestra una opcion
