@@ -338,41 +338,54 @@ const Form = () => {
     //     }
     // }
 
-	const viernes = async () => {
+	useEffect(() => {
 
-		try {
-			
-			const res = await axios.get('/horas/viernes')
-
-			setViernesHoras(res.data)
-
-			const response = await axios.get('/getturnos')
-
-			let array =  response.data
-
-			let hora_viernes = document.getElementById("horaViernes");
-			
 	
-			for (let i = 0; i < array.length; i++) {
-					
-				if  (array[i].dia === 'Viernes') { // AQUI
+		const viernes = async () => {
 
-					for (let v = 0; v < hora_viernes.length; v++) {
-							
-						if (hora_viernes.options[v].value === array[i].hora) {
-							
-							hora_viernes.remove(v);
-							// hora_viernes.options[v].disabled = true
+			
+			try {
+				
+				setLoadingV(true)
+				
+				const res = await axios.get('/horas/viernes')
+
+				setViernesHoras(res.data)
+
+				const response = await axios.get('/getturnos')
+
+				let array =  response.data
+
+				let hora_viernes = document.getElementById("horaViernes");
+				
+		
+				for (let i = 0; i < array.length; i++) {
+						
+					if  (array[i].dia === 'Viernes') { // AQUI
+
+						for (let v = 0; v < hora_viernes.length; v++) {
+								
+							if (hora_viernes.options[v].value === array[i].hora) {
+								
+								hora_viernes.remove(v);
+								// hora_viernes.options[v].disabled = true
+							}
 						}
+								
 					}
-							
 				}
-			}
 
-		} catch (error) {
-			console.log(error)
+			} catch (error) {
+				console.log(error)
+			}
 		}
-	}
+
+		viernes()
+	}, [])
+
+	useEffect(() => {
+
+	
 
 	const sabado = async () => {
 
@@ -408,6 +421,10 @@ const Form = () => {
 			console.log(error)
 		}
 	}
+
+	sabado()
+
+	}, [])
 
 	
 	// Cuando se monte el compenente llama a la funcion horasFn()
@@ -460,7 +477,7 @@ const Form = () => {
 				/> */}
 
 				<LabelForm htmlFor='hour'> Viernes </LabelForm> 
-				<SelectForm id='horaViernes' value={horaViernes} onChange={viernesOnchage} onClick={() => viernes()} >
+				<SelectForm id='horaViernes' value={horaViernes} onChange={viernesOnchage} >
 					<option defaultChecked>Selecione una hora</option>
 					{                         
 						// Se mapea el array de objetos ViernesHoras y por cada valor se muestra una opcion
@@ -468,12 +485,12 @@ const Form = () => {
 					}
 				</SelectForm>
  
-				{loadingV == true ? <p>Cargando</p> : null}
+				{/* {loadingV == true ? <p>Cargando</p> : null} */}
 
 				{/* onClick={() => horasFn() */}
 
 				<LabelForm htmlFor='hour'> Sabado </LabelForm>
-				<SelectForm id='horaSabado' value={horaSabado} onChange={sabadoOnchage} onClick={() => sabado()}>
+				<SelectForm id='horaSabado' value={horaSabado} onChange={sabadoOnchage} >
 					<option defaultChecked>Selecione una hora</option>
 					{
 						// Se mapea el array de objetos sabadoHoras y por cada valor se muestra una opcion
