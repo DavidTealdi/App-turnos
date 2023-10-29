@@ -38,7 +38,11 @@ const Form = () => {
 	// Estado para manejar el mensaje de loading
 	const [loading, setLoading] = useState(false)
 
-	const [horas, setHoras] = useState([])
+	const [horaV, setHoraV] = useState([])
+	const [horaS, setHoraS] = useState([])
+
+	const [boolianV, setBoolianV] = useState(false)
+	const [boolianS, setBoolianS] = useState(false)
 
     const expresiones = {
 		nombre: /^[a-zA-ZÀ-ÿ\s]{3,40}$/, // Letras y espacios, pueden llevar acentos.
@@ -48,7 +52,17 @@ const Form = () => {
 	// Funcion para guardar la hora del viernes seleccionada
     const diaOnchage = (event) => {
         
-        setDia(event.target.value)
+		if (event.target.value === 'Viernes') {
+			setBoolianS(false)
+			setDia(event.target.value)
+			setBoolianV(true)
+		}
+
+		if (event.target.value === 'Sabado') {
+			setBoolianV(false)
+			setDia(event.target.value)
+			setBoolianS(true)
+		}
     }
 
     // Funcion para guardar la hora del sabado seleccionada
@@ -152,13 +166,12 @@ const Form = () => {
 			  axios.get('/horas/sabado')
 			]).then(
 			  axios.spread((viernes, sabado) => {
-				const horasCombinadas = [{hora: 'Viernes'}, ...viernes.data, {hora: 'Sabado'}, ...sabado.data];
-				console.log(horasCombinadas)
-				setHoras(horasCombinadas)
+				setHoraV(viernes.data)
+				setHoraS(sabado.data)
 			  })
 			);
 		} catch (error) {
-		console.log(error)
+			console.log(error)
 		}
 	}
 
@@ -209,8 +222,13 @@ const Form = () => {
 				<SelectForm id='hora' value={hora} onChange={horaOnchage} >
 					<option>Seleccione una hora</option>
 					{
-						// Se mapea el array de objetos sabadoHoras y por cada valor se muestra una opcion
-						horas?.map(hour => <option key={hour._id} value={hour.hora}> {hour.hora} </option>)
+						boolianV === true 
+							? 
+								horaV?.map(hour => <option key={hour._id} value={hour.hora}> {hour.hora} </option>)
+							: 
+								boolianS === true 
+									&& 
+										horaS?.map(hour => <option key={hour._id} value={hour.hora}> {hour.hora} </option>)
 					}
 				</SelectForm>
 

@@ -36,6 +36,11 @@ const Form = () => {
 	// Estado para manejar el mensaje de loading
 	const [loading, setLoading] = useState(false)
 
+	const [loadingHorasV, setLoadingHorasV] = useState(null)
+	const [loadingHorasS, setLoadingHorasS] = useState(null)
+	const [mensajeLoadingHorasV, setMensajeLoadingHorasV] = useState(null) 
+	const [mensajeLoadingHorasS, setMensajeLoadingHorasS] = useState(null) 
+
     const expresiones = {
 		nombre: /^[a-zA-ZÀ-ÿ\s]{3,40}$/, // Letras y espacios, pueden llevar acentos.
 		telefono: /^\d{7,14}$/ // 7 a 14 numeros.
@@ -280,35 +285,28 @@ const Form = () => {
 			
 			try {
 				
+				setLoadingHorasV(true)
+				
 				const res = await axios.get('/horas/viernes')
-
-				setViernesHoras(res.data)
+				
+				let horasV = res.data
 
 				const response = await axios.get('/getturnos')
 
-				let array =  response.data
+				let arrayV =  response.data
 
-				let hora_viernes = document.getElementById("horaViernes");
-				
-		
-				for (let i = 0; i < array.length; i++) {
-						
-					if  (array[i].dia === 'Viernes') { // AQUI
 
-						for (let v = 0; v < hora_viernes.length; v++) {
-								
-							if (hora_viernes.options[v].value === array[i].hora) {
-								
-								hora_viernes.remove(v);
-								// hora_viernes.options[v].disabled = true
-							}
-						}
-								
-					}
-				}
+				const horasDisponiblesV = horasV.filter(obj1 => {
+					return !arrayV.some(obj2 => obj2.hora === obj1.hora && obj2.dia === 'Viernes');
+				});
+
+				setViernesHoras(horasDisponiblesV)
+
+				setLoadingHorasV(false)
 
 			} catch (error) {
-				console.log(error)
+				setLoadingHorasV(null)
+				setMensajeLoadingHorasV(true)
 			}
 		}
 
@@ -321,35 +319,30 @@ const Form = () => {
 		const sabado = async () => {
 
 			try {
+
+				setLoadingHorasS(true)
 				
 				const res = await axios.get('/horas/sabado')
 
-				setSabadoHoras(res.data)
+				let horasS = res.data
 
 				const response = await axios.get('/getturnos')
 
-				let array =  response.data
+				let arrayS =  response.data
 
-				let hora_sabado = document.getElementById("horaSabado");
+				const horasDisponiblesS = horasS.filter(obj1 => {
+					return !arrayS.some(obj2 => obj2.hora === obj1.hora && obj2.dia === 'Sabado');
+				});
+
+				setSabadoHoras(horasDisponiblesS)
+
+				setLoadingHorasS(false)
 				
-		
-				for (let i = 0; i < array.length; i++) {
-					
-					if  (response.data[i].dia === 'Sabado') { // AQUI
-						
-						for (let s = 0; s < hora_sabado.length; s++) {
-									
-							if  (hora_sabado.options[s].value === array[i].hora) {
-
-								hora_sabado.remove(s);
-								// hora_sabado.options[s].disabled = true
-							}
-						}
-					}
-				}
 
 			} catch (error) {
-				console.log(error)
+				setLoadingHorasS(null)
+				setMensajeLoadingHorasS(true)
+
 			}
 		}
 
@@ -398,25 +391,65 @@ const Form = () => {
 					expresionRegular={expresiones.telefono}
 				/>
 
+
 				<LabelForm htmlFor='hour'> Viernes </LabelForm> 
-				<SelectForm id='horaViernes' value={horaViernes} onChange={viernesOnchage} >
-					<option defaultChecked>Selecione una hora</option>
-					{                         
-						// Se mapea el array de objetos ViernesHoras y por cada valor se muestra una opcion
-						viernesHoras.map(hour => <option key={hour._id} value={hour.hora}> {hour.hora} </option>)
-					}
-				</SelectForm>
+				{
+					loadingHorasV === true 
+						? 
+							<Loading>Cargando horas...</Loading>
+						: 
+							loadingHorasV === false 
+								&&
+									<SelectForm id='horaViernes' value={horaViernes} onChange={viernesOnchage} >
+										<option defaultChecked>Selecione una hora</option>
+										{                         
+											// Se mapea el array de objetos ViernesHoras y por cada valor se muestra una opcion
+											viernesHoras.map(hour => <option key={hour._id} value={hour.hora}> {hour.hora} </option>)
+										}
+									</SelectForm>
+				}
+
+				{
+					// Si no se pueden cargar las horas mostramos un mensaje de error
+					mensajeLoadingHorasV === true && 
+						<MensajeError>
+							<p>
+								<FontAwesomeIcon icon={faExclamationTriangle}/>
+								<b>Error:</b> no se pueden cargar las horas.
+							</p>
+						</MensajeError>
+				}
+				 
  
 				<LabelForm htmlFor='hour'> Sabado </LabelForm>
-				<SelectForm id='horaSabado' value={horaSabado} onChange={sabadoOnchage} >
-					<option defaultChecked>Selecione una hora</option>
-					{
-						// Se mapea el array de objetos sabadoHoras y por cada valor se muestra una opcion
-						sabadoHoras.map(hour => <option key={hour._id} value={hour.hora}> {hour.hora} </option>)
-					}
-				</SelectForm>
-
-
+				{
+					loadingHorasS === true 
+						? 
+							<Loading>Cargando horas...</Loading>
+						: 
+							loadingHorasV === false 
+								&&
+									<SelectForm id='horaSabado' value={horaSabado} onChange={sabadoOnchage} >
+										<option defaultChecked>Selecione una hora</option>
+										{
+											// Se mapea el array de objetos sabadoHoras y por cada valor se muestra una opcion
+											sabadoHoras.map(hour => <option key={hour._id} value={hour.hora}> {hour.hora} </option>)
+										}
+									</SelectForm>
+				}
+ 
+				{
+					// Si no se pueden cargar las horas mostramos un mensaje de error
+					mensajeLoadingHorasS === true && 
+						<MensajeError>
+							<p>
+								<FontAwesomeIcon icon={faExclamationTriangle}/>
+								<b>Error:</b> no se pueden cargar las horas.
+							</p>
+						</MensajeError>
+				}
+				
+ 
 				<DivHora>
 					{
 						// Muestra en pantalla con una etiqueta P el dia y hora seleccionado
