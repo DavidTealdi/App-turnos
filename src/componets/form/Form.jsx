@@ -52,7 +52,7 @@ const Form = () => {
         name: name.campo,
         lastName: lastName.campo,
         number: number.campo,
-        dia: 'Viernes', // Aqui
+        dia: 'Jueves', // Aqui
         hora: horaViernes 
     }
 
@@ -62,21 +62,21 @@ const Form = () => {
         name: name.campo,
         lastName: lastName.campo,
         number: number.campo,
-        dia: 'Sabado', // Aqui
+        dia: 'Viernes', // Aqui
         hora: horaSabado
     }
 
 	// Objeto para guardar el turno que seleccione el usuario
 	// y enviarlo al servidor para ver si existe o no el turno
 	let turnosEV = {
-		dia: 'Viernes', // Aqui
+		dia: 'Jueves', // Aqui
         hora: horaViernes 
 	}
 
 	// Objeto para guardar el turno que seleccione el usuario
 	// y enviarlo al servidor para ver si existe o no el turno
 	let turnosES = {
-		dia: 'Sabado', // Aqui
+		dia: 'Viernes', // Aqui
         hora: horaSabado
 	}
 
@@ -297,7 +297,7 @@ const Form = () => {
 
 
 				const horasDisponiblesV = horasV.filter(obj1 => {
-					return !arrayV.some(obj2 => obj2.hora === obj1.hora && obj2.dia === 'Viernes');
+					return !arrayV.some(obj2 => obj2.hora === obj1.hora && obj2.dia === 'Jueves'); // Aqui
 				});
 
 				setViernesHoras(horasDisponiblesV)
@@ -331,7 +331,7 @@ const Form = () => {
 				let arrayS =  response.data
 
 				const horasDisponiblesS = horasS.filter(obj1 => {
-					return !arrayS.some(obj2 => obj2.hora === obj1.hora && obj2.dia === 'Sabado');
+					return !arrayS.some(obj2 => obj2.hora === obj1.hora && obj2.dia === 'Viernes'); // Aqui
 				});
 
 				setSabadoHoras(horasDisponiblesS)
@@ -392,7 +392,7 @@ const Form = () => {
 				/>
 
 
-				<LabelForm htmlFor='hour'> Viernes </LabelForm> 
+				<LabelForm htmlFor='hour'> Jueves </LabelForm> 
 				{
 					loadingHorasV === true 
 						? 
@@ -421,7 +421,7 @@ const Form = () => {
 				}
 				 
  
-				<LabelForm htmlFor='hour'> Sabado </LabelForm>
+				<LabelForm htmlFor='hour'> Viernes </LabelForm>
 				{
 					loadingHorasS === true 
 						? 
@@ -457,10 +457,10 @@ const Form = () => {
 						
 							horaViernes 
 																		// AQUI
-								? <DiaHora><SpanTurno>Turno: </SpanTurno> Viernes {horaViernes}</DiaHora>
+								? <DiaHora><SpanTurno>Turno: </SpanTurno> Jueves {horaViernes}</DiaHora>
 						
 							: horaSabado 								// AQUI
-								? <DiaHora><SpanTurno>Turno: </SpanTurno> Sabado {horaSabado}</DiaHora> 
+								? <DiaHora><SpanTurno>Turno: </SpanTurno> Viernes {horaSabado}</DiaHora> 
 						
 							: null
 					}
