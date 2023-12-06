@@ -11,7 +11,7 @@ import Input from '../input/Input';
 
 
 // Varianble para guardar las opciones del select de hora viernes
-const Dia = [ {value: "Seleccione un dia"}, {value: 'Jueves'}, {value: 'Viernes'}]
+const Dia = [ {value: "Seleccione un dia"}, {value: 'Viernes'}, {value: 'Sabado'}]
 
 
 const Form = () => {
@@ -52,13 +52,13 @@ const Form = () => {
 	// Funcion para guardar la hora del viernes seleccionada
     const diaOnchage = (event) => {
         
-		if (event.target.value === 'Jueves') {
+		if (event.target.value === 'Viernes') {
 			setBoolianS(false)
 			setDia(event.target.value)
 			setBoolianV(true)
 		}
 
-		if (event.target.value === 'Viernes') {
+		if (event.target.value === 'Sabado') {
 			setBoolianV(false)
 			setDia(event.target.value)
 			setBoolianS(true)
